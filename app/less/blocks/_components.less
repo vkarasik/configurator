@@ -1,0 +1,36 @@
+.components {
+    margin-top: 15px;
+    font-size: 160%;
+
+    td {
+        padding: 10px;
+        border: 1px solid @color-gray-middle;
+        text-align: center;
+
+        &:first-child {
+            text-align: left;
+        }
+    }
+
+    thead {
+        td {
+            background: @color-gray-deep;
+            border: 1px solid @color-gray-deep;
+            color: @color-gray-light;
+        }
+    }
+
+    &__category {
+        td {
+            background: @color-gray-middle;
+            color: @color-white;
+        }
+    }
+
+    &__item {
+        td {
+            color: @color-gray-deep;
+            line-height: 1.3;
+        }
+    }
+}

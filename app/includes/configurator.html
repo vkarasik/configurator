@@ -2,7 +2,7 @@
     <h1>Конфигуратор сервера</h1>
 
     <div class="compatibility">
-        <h3>Учитывать совместимость</h3>
+        <div class="compatibility__head">Учитывать совместимость</div>
         <label class="switch">
             <input type="checkbox" id="compatible" checked>
             <span class="switch__slider"></span>
@@ -22,7 +22,7 @@
         <div class="config__item">
             <div class="config__item-type">
                 <img src="img/icon_base.svg" alt="">
-                <span class="config__item-type-name">Платформа</span>
+                <span class="config__item-type-name">ASUS RS100-E9-PI2</span>
             </div>
             <div class="config__item-quantity"><input type="text" value="1"></div>
             <div class="config__item-price">1 550 $</div>
@@ -130,10 +130,61 @@
     </div>
 
     <div class="result">
+        <div class="result__item result__item_config">
+            <h2 class="result__item-head">Конфигурация</h2>
+            <div class="result__item-description">Сервер CDL [ASUS RS100-E9-PI2 / Xeon E3-1220v6 (x1) / no hdd / Intel
+                S3520 800Gb SSD (x3) / 8Tb SATA 7.2k Ent HDD / 2x10Gb SFP+(x2) / ТУ РБ 101290106.001-2017]</div>
+        </div>
+
         <div class="result__item">
-            <div class="result__item-head">Конфигурация</div>
-            <div class="result__item-inner"></div>
+            <h2 class="result__item-head">Количество</h2>
+            <div class="result__item-quantity">
+                <span class="result__item-quantity-minus"><img src="img/icon_minus.svg" alt=""></span>
+                <span class="result__item-quantity-number">1</span>
+                <span class="result__item-quantity-plus"><img src="img/icon_plus.svg" alt=""></span>
+            </div>
+        </div>
+
+        <div class="result__item">
+            <h2 class="result__item-head">Цена</h2>
+            <div class="result__item-price">5 000 $</div>
+        </div>
+
+        <div class="result__item">
+            <h2 class="result__item-head">Срок поставки</h2>
+            <div class="result__item-term">20 дн.</div>
         </div>
     </div>
 
+    <div class="sent-inner">
+        <button class="sent"><img src="img/icon_plane.svg" alt=""><span>Отправить</span></button>
+    </div>
+</div>
+
+<div class="overlay">
+    <div class="overlay__content">
+        <h2 class="overlay__head">Компонент</h2>
+        <table class="components">
+            <thead>
+                <tr>
+                    <td>Наименование</td>
+                    <td>Цена</td>
+                    <td>Срок&nbsp;поставки</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="components__category">
+                    <td colspan="4">Стоечные двухпроцессорные платформы 19”</td>
+                </tr>
+                <tr class="components__item">
+                    <td>RS100-E9-PI2 (1U, 1xLGA1151, 4xDDR4 ECC, 2x3,5"/4x2,5" SATA, 2xM,2, Intel SW Raid 0/1/5/10,
+                        DVD-RW, VGA, 2xGbE, 250W Bronze, 380mm dpt)</td>
+                    <td>1&nbsp;500&nbsp;$</td>
+                    <td>21&nbsp;дн.</td>
+                    <td><button class="sent">Выбрать</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

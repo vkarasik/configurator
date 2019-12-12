@@ -18,6 +18,10 @@ project: Server Configurator
 
 @import "blocks/_switcher.less";
 @import "blocks/_configurator.less";
+@import "blocks/_result.less";
+@import "blocks/_form.less";
+@import "blocks/_overlay.less";
+@import "blocks/_components.less";
 
 @import "import/_grid.less";
 
@@ -25,27 +29,14 @@ project: Server Configurator
 
 //* {border: 1px solid black !important;}
 
-html,
-body {
-    height: 100%;
-}
-
 .container {
     width: 80%;
     max-width: 1200px;
-    padding: 50px 50px;
+    padding: 50px;
     margin: 0 auto;
     background: @color-white;
     box-shadow: 0px 0px 25px 0 rgba(0, 0, 0, 0.3);
     border-radius: 5px;
-}
-
-.components {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 2px solid #bdc3c7;
-    padding-bottom: 50px;
-    margin-bottom: 50px;
 }
 
 .clear {
