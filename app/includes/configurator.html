@@ -29,7 +29,7 @@
             <div class="config__item-term">21 дн.</div>
             <div class="config__item-inner">
                 <span class="config__item-icon config__item-icon_add">
-                    <img src="../img/icon_add.svg" alt="Добавить компонент" title="Добавить компонент">
+                    <img src="../img/icon_add-green.svg" alt="Добавить компонент" title="Добавить компонент">
                 </span>
                 <span class="config__item-icon config__item-icon_clear">
                     <img src="../img/icon_clear.svg" alt="Очистить компонент" title="Очистить компонент">
@@ -47,7 +47,7 @@
             <div class="config__item-term">21 дн.</div>
             <div class="config__item-inner">
                 <span class="config__item-icon config__item-icon_add">
-                    <img src="../img/icon_add.svg" alt="Добавить компонент" title="Добавить компонент">
+                    <img src="../img/icon_add-green.svg" alt="Добавить компонент" title="Добавить компонент">
                 </span>
                 <span class="config__item-icon config__item-icon_clear">
                     <img src="../img/icon_clear.svg" alt="Очистить компонент" title="Очистить компонент">
@@ -65,7 +65,7 @@
             <div class="config__item-term">21 дн.</div>
             <div class="config__item-inner">
                 <span class="config__item-icon config__item-icon_add">
-                    <img src="../img/icon_add.svg" alt="Добавить компонент" title="Добавить компонент">
+                    <img src="../img/icon_add-green.svg" alt="Добавить компонент" title="Добавить компонент">
                 </span>
                 <span class="config__item-icon config__item-icon_clear">
                     <img src="../img/icon_clear.svg" alt="Очистить компонент" title="Очистить компонент">
@@ -83,7 +83,7 @@
             <div class="config__item-term">21 дн.</div>
             <div class="config__item-inner">
                 <span class="config__item-icon config__item-icon_add">
-                    <img src="../img/icon_add.svg" alt="Добавить компонент" title="Добавить компонент">
+                    <img src="../img/icon_add-green.svg" alt="Добавить компонент" title="Добавить компонент">
                 </span>
                 <span class="config__item-icon config__item-icon_clear">
                     <img src="../img/icon_clear.svg" alt="Очистить компонент" title="Очистить компонент">
@@ -101,7 +101,7 @@
             <div class="config__item-term">21 дн.</div>
             <div class="config__item-inner">
                 <span class="config__item-icon config__item-icon_add">
-                    <img src="../img/icon_add.svg" alt="Добавить компонент" title="Добавить компонент">
+                    <img src="../img/icon_add-green.svg" alt="Добавить компонент" title="Добавить компонент">
                 </span>
                 <span class="config__item-icon config__item-icon_clear">
                     <img src="../img/icon_clear.svg" alt="Очистить компонент" title="Очистить компонент">
@@ -119,7 +119,7 @@
             <div class="config__item-term">21 дн.</div>
             <div class="config__item-inner">
                 <span class="config__item-icon config__item-icon_add">
-                    <img src="../img/icon_add.svg" alt="Добавить компонент" title="Добавить компонент">
+                    <img src="../img/icon_add-green.svg" alt="Добавить компонент" title="Добавить компонент">
                 </span>
                 <span class="config__item-icon config__item-icon_clear">
                     <img src="../img/icon_clear.svg" alt="Очистить компонент" title="Очистить компонент">
@@ -161,9 +161,10 @@
     </div>
 </div>
 
-<div class="overlay">
-    <div class="overlay__content">
-        <h2 class="overlay__head">Компонент</h2>
+<div class="modal" style="display: none;">
+    <div class="modal__content">
+        <div class="modal__close"></div>
+        <h2 class="modal__head">Компонент</h2>
         <table class="components">
             <thead>
                 <tr>
@@ -182,9 +183,26 @@
                         DVD-RW, VGA, 2xGbE, 250W Bronze, 380mm dpt)</td>
                     <td>1&nbsp;500&nbsp;$</td>
                     <td>21&nbsp;дн.</td>
-                    <td><button class="sent">Выбрать</button></td>
+                    <td class="components__item-select" title="Выбор компонента"><img src="img/icon_add-blue.svg"
+                            alt="Выбор компонента" title="Выбор компонента"></td>
                 </tr>
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="modal">
+    <div class="modal__form">
+        <div class="modal__close"></div>
+        <h2 class="modal__head">Отправить менеджеру</h2>
+        <p class="modal__text">Чтобы получить счет, уточнить срок поставки и&nbsp;возможность скидки, отправьте запрос
+            менеджеру</p>
+
+        <form action="">
+            <input type="text" placeholder="Наименование компании">
+            <input type="text" placeholder="Email">
+            <input type="text" placeholder="Комментарий">
+            <button class="sent" type="submit"><img src="img/icon_plane.svg" alt=""><span>Отправить</span></button>
+        </form>
     </div>
 </div>

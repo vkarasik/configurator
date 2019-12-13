@@ -3,24 +3,16 @@ autor: Karasik Vadim
 project: Server Configurator
 */
 
-@color-blue: #3498db;
-@color-red: #ff4646;
-@color-green: #6fcf97;
-@color-white: #ffffff;
-@color-gray-deep: #828282;
-@color-gray-middle: #bdbdbd;
-@color-gray-light: #f2f2f2;
-
 @import "import/_reset.less";
 @import "import/_fonts.less";
-// @import "import/_colors.less";
+@import "import/_colors.less";
 @import "import/_common.less";
 
 @import "blocks/_switcher.less";
 @import "blocks/_configurator.less";
 @import "blocks/_result.less";
 @import "blocks/_form.less";
-@import "blocks/_overlay.less";
+@import "blocks/_modal.less";
 @import "blocks/_components.less";
 
 @import "import/_grid.less";
@@ -43,162 +35,12 @@ project: Server Configurator
     clear: both;
 }
 
-.component-item {
-    width: 15%;
-    &-button {
-        padding: 30px 0;
-        border: 2px solid #bdc3c7;
-        border-radius: 7px;
-        text-align: center;
-        cursor: pointer;
-    }
-    &-choice {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 20px;
-        padding: 0 10px;
-        span {
-            padding: 0 5px;
-            text-align: center;
-        }
-    }
-}
-
-.config {
-    .config-name {
-        display: inline-block;
-        vertical-align: top;
-        width: 30%;
-        p {
-            font-size: 160%;
-            line-height: 1.3;
-
-        }
-    }
-    .config-amount {
-        display: inline-block;
-        vertical-align: top;
-        width: 23%;
-        text-align: center;
-        .current-amount {
-            vertical-align: middle;
-            font-size: 400%;
-
-        }
-        .toggle-amount {
-            display: inline-block;
-            vertical-align: middle;
-            text-align: center;
-
-            font-size: 400%;
-        }
-    }
-    .config-price {
-        display: inline-block;
-        vertical-align: top;
-        width: 23%;
-        text-align: center;
-        p {
-
-            font-size: 400%;
-        }
-    }
-    .config-delivery {
-        display: inline-block;
-        vertical-align: top;
-        width: 23%;
-        text-align: center;
-        p {
-
-            font-size: 400%;
-        }
-    }
-}
-
-.modal {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    //height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    overflow-y: auto;
-    &-content {
-       // position: relative;
-        display: block;
-        width: 50%;
-        padding: 20px;
-        margin: 50px auto 20px;
-        border-radius: 5px;
-        background: #fff;
-    }
-    .close{
-        float: right;
-        border: 1px solid black;
-        font-size: 180%;
-        padding: 10px;
-    }
-
-    .components-list {
-        width: 100%;
-        font-size: 160%;
-        font-family: "HelveticaNeueCyr-Roman", Arial, Helvetica, sans-serif;
-        
-        .subcat{
-            background: #606060 + 50%;
-            td{
-                color: #ffffff;
-            }
-        }
-
-        td, th{
-            padding: 8px 10px;
-            border: 1px solid #bdc3c7;
-            color: #3b3b3b;
-        }
-        thead tr th{
-            text-align: center;
-            background: #606060;
-            color: #ffffff;
-        }
-        thead tr th:first-child{
-            text-align: left;
-        }
-        tbody td{
-            text-align: center;
-        }
-        tbody tr td:first-child{
-            text-align: left !important;
-        }
-
-        button{
-            padding: 5px 10px;
-            border: 1px solid #3498db - 20%;
-            border-radius: 2px;
-            background: #3498db;
-            color: #ffffff;
-            font-family: "HelveticaNeueCyr-Light", Arial, Helvetica, sans-serif;
-            font-size: 100%;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-
-            &:hover{
-                background: #3498db + 10%;
-            }
-        }
-        
-    }
-
-    &-open{
-        overflow: hidden;
-    }
-}
-
 .hide {
     display: none;
+}
+
+.text-a-c{
+    text-align: center;
 }
 
 //Extra small devices Phones (<768px)	
