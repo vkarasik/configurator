@@ -1,5 +1,5 @@
 {
-    "platform": [{
+    "base": [{
             "name": "RS300-E9-RS4 (1U, 1xLGA1151, 4xDDR4 ECC, 4x3,5\" HotSwap, 2x2,5\" SSD, 2xM,2, Intel SW Raid 0/1/5/10, DVD-RW, VGA, 4xGbE, 2x450W Gold HotSwap)",
             "shortname": "RS300-E9-RS4",
             "relevant": "RS300",

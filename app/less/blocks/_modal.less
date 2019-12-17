@@ -1,4 +1,5 @@
 .modal {
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -8,6 +9,18 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     overflow-y: auto;
+    opacity: 0;
+    transition: all 5s ease 0s;
+
+    &_show{
+        display: block;
+        opacity: 1;
+    }
+
+    &-open{
+        overflow-y: hidden;
+        padding-right: 17px;
+    }
 
     &__content {
         position: relative;
@@ -62,6 +75,7 @@
         width: 16px;
         height: 16px;
         background: url(../img/icon_close.svg) center center no-repeat;
+        cursor: pointer;
     }
 
     &__head {
