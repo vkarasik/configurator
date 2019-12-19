@@ -1,10 +1,55 @@
 var currentConfig = {
-    base: '',
-    cpu: '',
+    base: '121212',
+    cpu: '323423423',
     ram: '',
     hdd: '',
     ssd: '',
     options: ''
+};
+
+var currentConfig_1 = {
+    base: [{
+        brand: '',
+        name: '',
+        quantity: null,
+        price: null,
+        term: null,
+    }],
+    cpu: [{
+        brand: '',
+        name: '',
+        quantity: null,
+        price: null,
+        term: null,
+    }],
+    ram: [{
+        brand: '',
+        name: '',
+        quantity: null,
+        price: null,
+        term: null,
+    }],
+    hdd: [{
+        brand: '',
+        name: '',
+        quantity: null,
+        price: null,
+        term: null,
+    }],
+    ssd: [{
+        brand: '',
+        name: '',
+        quantity: null,
+        price: null,
+        term: null,
+    }],
+    options: [{
+        brand: '',
+        name: '',
+        quantity: null,
+        price: null,
+        term: null,
+    }]
 };
 
 document.addEventListener('DOMContentLoaded', function (e) {
@@ -19,6 +64,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
     document.querySelectorAll('.components__item-select > img').forEach(function (item) {
         item.addEventListener('click', choseComponent);
+    })
+
+    document.querySelectorAll('.config__item-icon_clear').forEach(function (item) {
+        item.addEventListener('click', clearItem);
+    })
+
+    document.querySelectorAll('.config__item-icon_add').forEach(function (item) {
+        item.addEventListener('click', addItem);
     })
 
     // Show modal window
@@ -36,7 +89,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
         // document.querySelector('.components-list tbody').innerHTML = ""; // clean content inside
     }
 
-
     // Chose Component
     function choseComponent(e) {
         currentConfig['base'] = e.target.parentElement.parentElement.dataset.componentName;
@@ -45,14 +97,25 @@ document.addEventListener('DOMContentLoaded', function (e) {
     }
 
     // Add Item
-    function addItem(e){
+    function addItem(e) {
 
+        var node = e.target.parentElement.parentNode;
+        var clnNode = node.cloneNode(true);
+        document.querySelector('.config').appendChild(clnNode);
     }
 
 
     // Clear Item
-    function clearItem(e){
-
+    function clearItem(e) {
+        var rowItems = e.target.parentElement.parentElement.children;
+        // Hide Row Items
+        for (i = 1; i < rowItems.length; i++) {
+            rowItems[i].style.visibility = 'hidden';
+        }
+        // Restore Item Title
+        rowItems[0].children[1].innerHTML = rowItems[0].dataset.configItemTitle;
+        // Clear Item in currentConfig Object
+        currentConfig[e.target.parentElement.parentElement.id] = '';
     }
 
     // Get components list from JSON
@@ -70,25 +133,23 @@ document.addEventListener('DOMContentLoaded', function (e) {
     }
 
     // Select data for rendering table
-    function selectionData(curComponentList, curComponent){
+    function selectionData(curComponentList, curComponent) {
         var swichState = document.getElementById('compatibility').checked; // Check switch state
 
-        if(curComponent == 'base' || (curComponent != 'base' && !swichState)){
+        if (curComponent == 'base' || (curComponent != 'base' && !swichState)) {
             renderTable(curComponentList, curComponent); // Send full data to render
-        }
-        else if(curComponent != 'platform' && swichState){
+        } else if (curComponent != 'platform' && swichState) {
             var currentPlatformRelevant = currentConfig.platform.relevant;
             // Check if platform was not choosen yet
-            if(currentPlatformRelevant == '') {
+            if (currentPlatformRelevant == '') {
                 alert('Сначала выберете платформу, или отключите подбор с учетом совместимости!');
-            }
-            else{
+            } else {
                 // Delete unrelevant components
-                for(i=0; i < curComponentList.length; ++i){
+                for (i = 0; i < curComponentList.length; ++i) {
                     var item = curComponentList[i].relevant;
                     var platform = currentPlatformRelevant;
-                    if(item.indexOf(platform) == -1){ // check forall;
-                        curComponentList.splice(i,1);
+                    if (item.indexOf(platform) == -1) { // check forall;
+                        curComponentList.splice(i, 1);
                     }
                 }
                 renderTable(curComponentList, curComponent);
