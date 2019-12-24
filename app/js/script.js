@@ -54,25 +54,34 @@ var currentConfig_1 = {
 
 document.addEventListener('DOMContentLoaded', function (e) {
 
-    document.querySelectorAll('.config__item-type > span, .config__item-type > img').forEach(function (item) {
-        item.addEventListener('click', getData);
+    document.querySelector('.config').addEventListener('click', function (e) {
+        if (e.target.classList.contains('config__item-icon_clear')) {
+            if (e.target.parentElement.parentNode.dataset.iscloned == 'true') {
+                delItem(e);
+            } else {
+                var rowItems = e.target.parentElement.parentElement.children;
+                clearItem(rowItems);
+            }
+        } else if (e.target.classList.contains('config__item-icon_add')) {
+            addItem(e);
+        } else if (e.target.classList.contains('config__item-type-img') || e.target.classList.contains('config__item-type-name')) {
+            getData()
+        }
+
+        // если элемент имеет класс additioan вместо очистки удалить строку
     })
 
-    document.querySelectorAll('.modal__close').forEach(function (item) {
-        item.addEventListener('click', hideModal);
-    })
+    // document.querySelectorAll('.config__item-type > span, .config__item-type > img').forEach(function (item) {
+    //     item.addEventListener('click', getData);
+    // })
 
-    document.querySelectorAll('.components__item-select > img').forEach(function (item) {
-        item.addEventListener('click', choseComponent);
-    })
+    // document.querySelectorAll('.modal__close').forEach(function (item) {
+    //     item.addEventListener('click', hideModal);
+    // })
 
-    document.querySelectorAll('.config__item-icon_clear').forEach(function (item) {
-        item.addEventListener('click', clearItem);
-    })
-
-    document.querySelectorAll('.config__item-icon_add').forEach(function (item) {
-        item.addEventListener('click', addItem);
-    })
+    // document.querySelectorAll('.components__item-select > img').forEach(function (item) {
+    //     item.addEventListener('click', choseComponent);
+    // })
 
     // Show modal window
     function showModal(e) {
@@ -98,24 +107,33 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
     // Add Item
     function addItem(e) {
-
         var node = e.target.parentElement.parentNode;
         var clnNode = node.cloneNode(true);
-        document.querySelector('.config').appendChild(clnNode);
+        clnNode.dataset.iscloned = 'true';
+        clearItem(clnNode.children);
+        document.querySelector('.config').insertBefore(clnNode, node.nextElementSibling);
     }
 
+    // Del Item
+    function delItem(e) {
+        var node = e.target.parentElement.parentNode;
+        node.remove();
+    }
 
     // Clear Item
-    function clearItem(e) {
-        var rowItems = e.target.parentElement.parentElement.children;
-        // Hide Row Items
-        for (i = 1; i < rowItems.length; i++) {
-            rowItems[i].style.visibility = 'hidden';
-        }
-        // Restore Item Title
+    function clearItem(rowItems) {
+        // Item Type
         rowItems[0].children[1].innerHTML = rowItems[0].dataset.configItemTitle;
+        // Item Quantity
+        rowItems[1].firstElementChild.value = null;
+        rowItems[1].firstElementChild.disabled = true;
+        // Item Price
+        rowItems[2].innerHTML = "—";
+        // Item Term
+        rowItems[3].innerHTML = "—";
+
         // Clear Item in currentConfig Object
-        currentConfig[e.target.parentElement.parentElement.id] = '';
+        // currentConfig[e.target.parentElement.parentElement.id] = '';
     }
 
     // Get components list from JSON
