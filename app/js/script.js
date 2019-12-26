@@ -11,6 +11,11 @@ var currentConfig_1 = {
     base: [{
         brand: '',
         name: '',
+        description: '',
+        cpu: null,
+        ram: null,
+        hdd: null,
+        ssd: null,
         quantity: null,
         price: null,
         term: null,
@@ -18,6 +23,7 @@ var currentConfig_1 = {
     cpu: [{
         brand: '',
         name: '',
+        description: '',
         quantity: null,
         price: null,
         term: null,
@@ -25,6 +31,7 @@ var currentConfig_1 = {
     ram: [{
         brand: '',
         name: '',
+        description: '',
         quantity: null,
         price: null,
         term: null,
@@ -32,13 +39,15 @@ var currentConfig_1 = {
     hdd: [{
         brand: '',
         name: '',
+        description: '',
         quantity: null,
         price: null,
         term: null,
     }],
     ssd: [{
         brand: '',
-        name: '',
+        name: '12',
+        description: '',
         quantity: null,
         price: null,
         term: null,
@@ -46,6 +55,7 @@ var currentConfig_1 = {
     options: [{
         brand: '',
         name: '',
+        description: '',
         quantity: null,
         price: null,
         term: null,
@@ -67,8 +77,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
         } else if (e.target.classList.contains('config__item-type-img') || e.target.classList.contains('config__item-type-name')) {
             getData()
         }
-
-        // если элемент имеет класс additioan вместо очистки удалить строку
     })
 
     // document.querySelectorAll('.config__item-type > span, .config__item-type > img').forEach(function (item) {
@@ -109,28 +117,28 @@ document.addEventListener('DOMContentLoaded', function (e) {
     function addItem(e) {
         var node = e.target.parentElement.parentNode;
         var clnNode = node.cloneNode(true);
-        clnNode.dataset.iscloned = 'true';
-        clearItem(clnNode.children);
-        document.querySelector('.config').insertBefore(clnNode, node.nextElementSibling);
+        clnNode.dataset.iscloned = 'true'; // Set attr for deleteItem
+        clnNode.children[4].children[0].remove(); // Delete add button
+        clnNode.dataset.index = currentConfig_1[node.id].length; // get array length
+        currentConfig_1[node.id].push({name: currentConfig_1[node.id].length}); // add new item into array
+        clearItem(clnNode.children); // clear item
+        document.querySelector('.config').insertBefore(clnNode, node.nextElementSibling); // add item on the page
     }
 
     // Del Item
     function delItem(e) {
         var node = e.target.parentElement.parentNode;
+        delete currentConfig_1[node.id][parseInt(node.dataset.index)]; // delete item from array
         node.remove();
     }
 
     // Clear Item
     function clearItem(rowItems) {
-        // Item Type
-        rowItems[0].children[1].innerHTML = rowItems[0].dataset.configItemTitle;
-        // Item Quantity
-        rowItems[1].firstElementChild.value = null;
+        rowItems[0].children[1].innerHTML = rowItems[0].dataset.configItemTitle; // Item Type
+        rowItems[1].firstElementChild.value = null; // Item Quantity
         rowItems[1].firstElementChild.disabled = true;
-        // Item Price
-        rowItems[2].innerHTML = "—";
-        // Item Term
-        rowItems[3].innerHTML = "—";
+        rowItems[2].innerHTML = "—"; // Item Price
+        rowItems[3].innerHTML = "—"; // Item Term
 
         // Clear Item in currentConfig Object
         // currentConfig[e.target.parentElement.parentElement.id] = '';
