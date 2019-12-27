@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         } else if (e.target.classList.contains('config__item-icon_add')) {
             addItem(e);
         } else if (e.target.classList.contains('config__item-type-img') || e.target.classList.contains('config__item-type-name')) {
-            getData()
+            getData(e)
         }
     })
 
@@ -120,6 +120,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         clnNode.dataset.iscloned = 'true'; // Set attr for deleteItem
         clnNode.children[4].children[0].remove(); // Delete add button
         clnNode.dataset.index = currentConfig_1[node.id].length; // get array length
+        clnNode.id += currentConfig_1[node.id].length; // set id
         currentConfig_1[node.id].push({name: currentConfig_1[node.id].length}); // add new item into array
         clearItem(clnNode.children); // clear item
         document.querySelector('.config').insertBefore(clnNode, node.nextElementSibling); // add item on the page
@@ -128,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     // Del Item
     function delItem(e) {
         var node = e.target.parentElement.parentNode;
-        delete currentConfig_1[node.id][parseInt(node.dataset.index)]; // delete item from array
+        delete currentConfig_1[node.dataset.configItemType][parseInt(node.dataset.index)]; // delete item from array
         node.remove();
     }
 
@@ -146,7 +147,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
     // Get components list from JSON
     function getData(component) { //component = e
-        var curComponent = component.target.parentElement.parentElement.id;
+        var currentNode = component.target.parentElement.parentElement;
+        var curComponentType = currentNode.dataset.configItemType;
+        var curComponentId = currentNode.id;
 
         var requestPrice = new XMLHttpRequest();
         requestPrice.open('GET', 'json/price.json');
