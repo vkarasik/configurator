@@ -140,33 +140,29 @@ document.addEventListener('DOMContentLoaded', function (e) {
         rowItems[1].firstElementChild.disabled = true;
         rowItems[2].innerHTML = "—"; // Item Price
         rowItems[3].innerHTML = "—"; // Item Term
-
-        // Clear Item in currentConfig Object
-        // currentConfig[e.target.parentElement.parentElement.id] = '';
     }
 
     // Get components list from JSON
-    function getData(component) { //component = e
-        var currentNode = component.target.parentElement.parentElement;
-        var curComponentType = currentNode.dataset.configItemType;
-        var curComponentId = currentNode.id;
+    function getData(e) {
+        var curNode = e.target.parentElement.parentElement; // node to put data in
+        var curComponent = curNode.dataset.configItemType;
 
         var requestPrice = new XMLHttpRequest();
-        requestPrice.open('GET', 'json/price.json');
+        requestPrice.open('GET', 'json/price.json', true);
         requestPrice.onload = function () {
             var data = JSON.parse(this.response);
             var curComponentList = data[curComponent];
-            selectionData(curComponentList, curComponent);
+            selectionData(curComponentList, curNode, curComponent);
         }
         requestPrice.send();
     }
 
     // Select data for rendering table
     function selectionData(curComponentList, curComponent) {
-        var swichState = document.getElementById('compatibility').checked; // Check switch state
+        var swichState = document.getElementById('compatibility').checked; // get compatibility switch state
 
         if (curComponent == 'base' || (curComponent != 'base' && !swichState)) {
-            renderTable(curComponentList, curComponent); // Send full data to render
+            renderTable(curComponentList, curComponent); // send full data to render
         } else if (curComponent != 'platform' && swichState) {
             var currentPlatformRelevant = currentConfig.platform.relevant;
             // Check if platform was not choosen yet
@@ -186,27 +182,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
         }
     }
 
-
-
-
-
-
-
-
-
-    // Get components list from JSON
-    /* function getData(component) { //component = e
-        var curComponent = component.currentTarget.parentElement.id;
-
-        var requestPrice = new XMLHttpRequest();
-        requestPrice.open('GET', 'json/price.json');
-        requestPrice.onload = function () {
-            var data = JSON.parse(this.response);
-            var curComponentList = data[curComponent];
-            selectionData(curComponentList, curComponent);
-        }
-        requestPrice.send();
-    } */
 
     // Get components list from DB
     // function getData(component) { //component = e
