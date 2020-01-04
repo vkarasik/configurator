@@ -5,7 +5,7 @@ require 'config/db.php';
 $componet = $_GET['cmpt'];
 
 // Create Query
-$query = "SELECT * FROM $componet";
+$query = "SELECT * FROM $componet WHERE ";
 
 // Get Result
 $result = mysqli_query($conn, $query);

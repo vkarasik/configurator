@@ -15,7 +15,7 @@ var currentConfig_1 = {
         cpu: null,
         ram: null,
         hdd: null,
-        ssd: null,
+        ssd: '212',
         quantity: null,
         price: null,
         term: null,
@@ -79,10 +79,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
         }
     })
 
-    // document.querySelectorAll('.config__item-type > span, .config__item-type > img').forEach(function (item) {
-    //     item.addEventListener('click', getData);
-    // })
-
     // document.querySelectorAll('.modal__close').forEach(function (item) {
     //     item.addEventListener('click', hideModal);
     // })
@@ -117,12 +113,12 @@ document.addEventListener('DOMContentLoaded', function (e) {
     function addItem(e) {
         var node = e.target.parentElement.parentNode;
         var clnNode = node.cloneNode(true);
-        clnNode.dataset.iscloned = 'true'; // Set attr for deleteItem
-        clnNode.children[4].children[0].remove(); // Delete add button
+        clnNode.dataset.iscloned = 'true'; // set attr for deleteItem
+        clnNode.children[4].children[0].remove(); // delete add button
         clnNode.dataset.index = currentConfig_1[node.id].length; // get array length
-        clnNode.id += currentConfig_1[node.id].length; // set id
+        clnNode.id += currentConfig_1[node.id].length; // set new id
         currentConfig_1[node.id].push({name: currentConfig_1[node.id].length}); // add new item into array
-        clearItem(clnNode.children); // clear item
+        clearItem(clnNode.children); // clear item row
         document.querySelector('.config').insertBefore(clnNode, node.nextElementSibling); // add item on the page
     }
 
@@ -135,17 +131,27 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
     // Clear Item
     function clearItem(rowItems) {
-        rowItems[0].children[1].innerHTML = rowItems[0].dataset.configItemTitle; // Item Type
-        rowItems[1].firstElementChild.value = null; // Item Quantity
+        rowItems[0].children[1].innerHTML = rowItems[0].dataset.configItemTitle; // item type
+        rowItems[1].firstElementChild.value = null; // item quantity
         rowItems[1].firstElementChild.disabled = true;
-        rowItems[2].innerHTML = "—"; // Item Price
-        rowItems[3].innerHTML = "—"; // Item Term
+        rowItems[2].innerHTML = "—"; // item price
+        rowItems[3].innerHTML = "—"; // item term
     }
 
     // Get components list from JSON
     function getData(e) {
-        var curNode = e.target.parentElement.parentElement; // node to put data in
-        var curComponent = curNode.dataset.configItemType;
+        var curNode = e.target.parentElement.parentElement; // node to put data into
+        var curComponent = curNode.dataset.configItemType; // current component
+        var swichState = document.getElementById('compatibility').checked; // get compatibility switch state
+        var filter = currentConfig_1['base'][0][curComponent]; // get filter for MYSQL WHERE clause
+        var request = 'get-component.php?cmpt='
+
+        if(curComponent !== 'base' && swichState){
+            
+        }
+        else{
+            renderTable(curComponentList, curNode, curComponent); // send full data to render
+        }
 
         var requestPrice = new XMLHttpRequest();
         requestPrice.open('GET', 'json/price.json', true);
@@ -158,28 +164,35 @@ document.addEventListener('DOMContentLoaded', function (e) {
     }
 
     // Select data for rendering table
-    function selectionData(curComponentList, curComponent) {
+    function selectionData(curComponentList, curNode, curComponent) {
         var swichState = document.getElementById('compatibility').checked; // get compatibility switch state
 
-        if (curComponent == 'base' || (curComponent != 'base' && !swichState)) {
-            renderTable(curComponentList, curComponent); // send full data to render
-        } else if (curComponent != 'platform' && swichState) {
-            var currentPlatformRelevant = currentConfig.platform.relevant;
-            // Check if platform was not choosen yet
-            if (currentPlatformRelevant == '') {
-                alert('Сначала выберете платформу, или отключите подбор с учетом совместимости!');
-            } else {
-                // Delete unrelevant components
-                for (i = 0; i < curComponentList.length; ++i) {
-                    var item = curComponentList[i].relevant;
-                    var platform = currentPlatformRelevant;
-                    if (item.indexOf(platform) == -1) { // check forall;
-                        curComponentList.splice(i, 1);
-                    }
-                }
-                renderTable(curComponentList, curComponent);
-            }
+        if(curComponent !== 'base' && swichState){
+            
         }
+        else{
+            renderTable(curComponentList, curNode, curComponent); // send full data to render
+        }
+
+        // if (curComponent == 'base' || (curComponent != 'base' && !swichState)) {
+        //     renderTable(curComponentList, curComponent); // send full data to render
+        // } else if (curComponent != 'platform' && swichState) {
+        //     var currentPlatformRelevant = currentConfig.platform.relevant;
+        //     // Check if platform was not choosen yet
+        //     if (currentPlatformRelevant == '') {
+        //         alert('Сначала выберете платформу, или отключите подбор с учетом совместимости!');
+        //     } else {
+        //         // Delete unrelevant components
+        //         for (i = 0; i < curComponentList.length; ++i) {
+        //             var item = curComponentList[i].relevant;
+        //             var platform = currentPlatformRelevant;
+        //             if (item.indexOf(platform) == -1) { // check forall;
+        //                 curComponentList.splice(i, 1);
+        //             }
+        //         }
+        //         renderTable(curComponentList, curComponent);
+        //     }
+        // }
     }
 
 
