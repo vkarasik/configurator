@@ -15,7 +15,7 @@
     <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
-    <title>Конфигуратор сервера</title>
+    <title>Конфигуратор сервера CDL</title>
     <meta name="description" content="" />
     <link rel="stylesheet" href="css/main.min.css">
     <script src="js/script.js"></script>

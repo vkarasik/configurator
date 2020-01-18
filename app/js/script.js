@@ -117,7 +117,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
         clnNode.children[4].children[0].remove(); // delete add button
         clnNode.dataset.index = currentConfig_1[node.id].length; // get array length
         clnNode.id += currentConfig_1[node.id].length; // set new id
-        currentConfig_1[node.id].push({name: currentConfig_1[node.id].length}); // add new item into array
+        currentConfig_1[node.id].push({
+            name: currentConfig_1[node.id].length
+        }); // add new item into array
         clearItem(clnNode.children); // clear item row
         document.querySelector('.config').insertBefore(clnNode, node.nextElementSibling); // add item on the page
     }
@@ -138,41 +140,79 @@ document.addEventListener('DOMContentLoaded', function (e) {
         rowItems[3].innerHTML = "—"; // item term
     }
 
-    // Get components list from JSON
+    // Getting components list from JSON
     function getData(e) {
         var curNode = e.target.parentElement.parentElement; // node to put data into
         var curComponent = curNode.dataset.configItemType; // current component
         var swichState = document.getElementById('compatibility').checked; // get compatibility switch state
-        var filter = currentConfig_1['base'][0][curComponent]; // get filter for MYSQL WHERE clause
-        var request = 'get-component.php?cmpt='
+        var url = 'get-component.php?cmpt=' + curComponent;
 
-        if(curComponent !== 'base' && swichState){
-            
+        if (curComponent !== 'base' && swichState) {
+            var filter = currentConfig_1['base'][0][curComponent]; // get filter for MYSQL WHERE clause
+            var url = url + '?filter=' + filter;
+            // если база еще не выбрана то на рендер только строка с предупреждением
+            xhrequest(url, curNode, curComponent);
+        } else {
+            xhrequest(url, curNode, curComponent);
         }
-        else{
-            renderTable(curComponentList, curNode, curComponent); // send full data to render
-        }
+    }
+
+    // Sending request
+    function xhrequest(url, curNode, curComponent) {
 
         var requestPrice = new XMLHttpRequest();
         requestPrice.open('GET', 'json/price.json', true);
         requestPrice.onload = function () {
             var data = JSON.parse(this.response);
             var curComponentList = data[curComponent];
-            selectionData(curComponentList, curNode, curComponent);
+            renderTable(curComponentList, curNode, curComponent);
         }
         requestPrice.send();
     }
 
+    // Rendering table
+    function renderTable(curComponentList, curNode, curComponent) {
+
+        for (i = 0; i < curComponentList.length; i++) {
+            var componentName = curComponentList[i].name + ' (' + curComponentList[i].spec + ')';
+            var componentShortName = curComponentList[i].name;
+            var componentPrice = curComponentList[i].price;
+            var componentAvailability = curComponentList[i].availability;
+            var componentSubcategory = curComponentList[i].subcategory;
+
+            // Add subcat row
+            var rowSubCat = document.createElement('tr');
+            rowSubCat.classList.add('components__category');
+            rowSubCat.innerHTML = '<td colspan="4">' + componentSubcategory + '</td>';
+            document.querySelector('.components tbody').appendChild(rowSubCat);
+
+            // Add component row 
+            var row = document.createElement('tr');
+            row.classList.add('components__item');
+            var tdName = '<td class="components__item-desc" data-shortname="' + componentShortName + '">' + componentName + '</td>';
+            var tdPrice = '<td class="components__item-price">' + componentPrice + '</td>';
+            var tdTerm = '<td class="components__item-term">' + componentAvailability + ' дн.</td>';
+            var tdSelect = '<td class="components__item-select" title="Выбор компонента"><img src="img/icon_add-blue.svg" title="Выбор компонента"></td>';
+            row.innerHTML = tdName + tdPrice + tdTerm + tdSelect;
+            document.querySelector('.components tbody').appendChild(row);
+        }
+
+        // Delete double subcats
+        var subCategories = document.querySelectorAll('.components__category');
+        for (i = 0; i < subCategories.length - 1; i++) { // Don't take last element
+            if (subCategories[i].innerHTML == subCategories[i + 1].innerHTML) {
+                var tbody = subCategories[i + 1].parentElement;
+                tbody.removeChild(subCategories[i + 1]);
+                //subCategories[i + 1].remove(); // IE11+
+            }
+        }
+    }
+
+
+
+
     // Select data for rendering table
     function selectionData(curComponentList, curNode, curComponent) {
-        var swichState = document.getElementById('compatibility').checked; // get compatibility switch state
-
-        if(curComponent !== 'base' && swichState){
-            
-        }
-        else{
-            renderTable(curComponentList, curNode, curComponent); // send full data to render
-        }
 
         // if (curComponent == 'base' || (curComponent != 'base' && !swichState)) {
         //     renderTable(curComponentList, curComponent); // send full data to render
