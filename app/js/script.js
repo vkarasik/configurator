@@ -79,13 +79,15 @@ document.addEventListener('DOMContentLoaded', function (e) {
         }
     })
 
-    // document.querySelectorAll('.modal__close').forEach(function (item) {
-    //     item.addEventListener('click', hideModal);
-    // })
+    document.querySelectorAll('.modal__close').forEach(function (e) {
+        e.addEventListener('click', hideModal);
+    })
 
-    // document.querySelectorAll('.components__item-select > img').forEach(function (item) {
-    //     item.addEventListener('click', choseComponent);
-    // })
+    document.querySelector('.components').addEventListener('click', function (e) {
+        if(e.target.className == 'components__item-select-icon'){
+            choseComponent();
+        }
+    })
 
     // Show modal window
     function showModal(e) {
@@ -99,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     function hideModal() {
         document.querySelector('.modal').classList.remove('modal_show');
         document.querySelector('body').classList.remove('modal-open'); // allow scroll body
-        // document.querySelector('.components-list tbody').innerHTML = ""; // clean content inside
+        document.querySelector('.components tbody').innerHTML = ""; // clean content inside
     }
 
     // Chose Component
@@ -173,6 +175,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     // Rendering table
     function renderTable(curComponentList, curNode, curComponent) {
 
+        // Render rows
         for (i = 0; i < curComponentList.length; i++) {
             var componentName = curComponentList[i].name + ' (' + curComponentList[i].spec + ')';
             var componentShortName = curComponentList[i].name;
@@ -190,9 +193,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
             var row = document.createElement('tr');
             row.classList.add('components__item');
             var tdName = '<td class="components__item-desc" data-shortname="' + componentShortName + '">' + componentName + '</td>';
-            var tdPrice = '<td class="components__item-price">' + componentPrice + '</td>';
-            var tdTerm = '<td class="components__item-term">' + componentAvailability + ' дн.</td>';
-            var tdSelect = '<td class="components__item-select" title="Выбор компонента"><img src="img/icon_add-blue.svg" title="Выбор компонента"></td>';
+            var tdPrice = '<td class="components__item-price">' + componentPrice + '&nbsp;$</td>';
+            var tdTerm = '<td class="components__item-term">' + componentAvailability + '&nbsp;дн.</td>';
+            var tdSelect = '<td class="components__item-select" title="Выбор компонента"><img class="components__item-select-icon" src="img/icon_add-blue.svg" title="Выбор компонента"></td>';
             row.innerHTML = tdName + tdPrice + tdTerm + tdSelect;
             document.querySelector('.components tbody').appendChild(row);
         }
@@ -206,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
                 //subCategories[i + 1].remove(); // IE11+
             }
         }
+        showModal();
     }
 
 
