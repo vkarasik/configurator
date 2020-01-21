@@ -84,8 +84,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
     })
 
     document.querySelector('.components').addEventListener('click', function (e) {
-        if(e.target.className == 'components__item-select-icon'){
-            choseComponent();
+        if (e.target.className == 'components__item-select-icon') {
+            choseComponent(e.target);
         }
     })
 
@@ -105,7 +105,10 @@ document.addEventListener('DOMContentLoaded', function (e) {
     }
 
     // Chose Component
-    function choseComponent(e) {
+    function choseComponent(item) {
+        var row = item.parentElement.parentElement;
+        var nodeIndex = row.dataset.nodeIndex;
+
         currentConfig['base'] = e.target.parentElement.parentElement.dataset.componentName;
 
         hideModal();
@@ -120,7 +123,12 @@ document.addEventListener('DOMContentLoaded', function (e) {
         clnNode.dataset.index = currentConfig_1[node.id].length; // get array length
         clnNode.id += currentConfig_1[node.id].length; // set new id
         currentConfig_1[node.id].push({
-            name: currentConfig_1[node.id].length
+            brand: null,
+            name: null,
+            description: null,
+            quantity: null,
+            price: null,
+            term: null,
         }); // add new item into array
         clearItem(clnNode.children); // clear item row
         document.querySelector('.config').insertBefore(clnNode, node.nextElementSibling); // add item on the page
@@ -129,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     // Del Item
     function delItem(e) {
         var node = e.target.parentElement.parentNode;
-        delete currentConfig_1[node.dataset.configItemType][parseInt(node.dataset.index)]; // delete item from array
+        delete currentConfig_1[node.dataset.configItemType][parseInt(node.dataset.index)]; // del item from array
         node.remove();
     }
 
@@ -175,6 +183,11 @@ document.addEventListener('DOMContentLoaded', function (e) {
     // Rendering table
     function renderTable(curComponentList, curNode, curComponent) {
 
+        // Link with current node
+        var componentsTable = document.querySelector('.components');
+        componentsTable.dataset.node = curNode.id;
+        componentsTable.dataset.nodeIndex = curNode.dataset.index;
+
         // Render rows
         for (i = 0; i < curComponentList.length; i++) {
             var componentName = curComponentList[i].name + ' (' + curComponentList[i].spec + ')';
@@ -192,10 +205,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
             // Add component row 
             var row = document.createElement('tr');
             row.classList.add('components__item');
+            row.dataset.node = curNode.id;
+            row.dataset.nodeIndex = curNode.dataset.index;
+
             var tdName = '<td class="components__item-desc" data-shortname="' + componentShortName + '">' + componentName + '</td>';
-            var tdPrice = '<td class="components__item-price">' + componentPrice + '&nbsp;$</td>';
-            var tdTerm = '<td class="components__item-term">' + componentAvailability + '&nbsp;дн.</td>';
+            var tdPrice = '<td class="components__item-price" data-price="' + componentPrice + '">' + componentPrice + '&nbsp;$</td>';
+            var tdTerm = '<td class="components__item-term" data-term="' + componentAvailability + '">' + componentAvailability + '&nbsp;дн.</td>';
             var tdSelect = '<td class="components__item-select" title="Выбор компонента"><img class="components__item-select-icon" src="img/icon_add-blue.svg" title="Выбор компонента"></td>';
+
             row.innerHTML = tdName + tdPrice + tdTerm + tdSelect;
             document.querySelector('.components tbody').appendChild(row);
         }
@@ -211,8 +228,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
         }
         showModal();
     }
-
-
 
 
     // Select data for rendering table
