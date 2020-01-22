@@ -1,13 +1,4 @@
 var currentConfig = {
-    base: '121212',
-    cpu: '323423423',
-    ram: '',
-    hdd: '',
-    ssd: '',
-    options: ''
-};
-
-var currentConfig_1 = {
     base: [{
         brand: '',
         name: '',
@@ -106,23 +97,28 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
     // Chose Component
     function choseComponent(item) {
-        var row = item.parentElement.parentElement;
-        var nodeIndex = row.dataset.nodeIndex;
+        var table = document.querySelector('.components'); // get node info from data attr
+        var node = table.dataset.node;
+        var componentType = table.dataset.componentType;
+        var index = table.dataset.nodeIndex;
+        var componentObj = currentConfig[componentType][index];
 
-        currentConfig['base'] = e.target.parentElement.parentElement.dataset.componentName;
-
+        var item = item.parentElement.parentElement;
+        componentObj.name = item.dataset.shortName;
+        componentObj.price = item.dataset.price;
+        componentObj.term = item.dataset.term;
         hideModal();
     }
 
     // Add Item
     function addItem(e) {
-        var node = e.target.parentElement.parentNode;
+        var node = e.target.parentElement.parentNode; // why node? might be better Element?
         var clnNode = node.cloneNode(true);
         clnNode.dataset.iscloned = 'true'; // set attr for deleteItem
         clnNode.children[4].children[0].remove(); // delete add button
-        clnNode.dataset.index = currentConfig_1[node.id].length; // get array length
-        clnNode.id += currentConfig_1[node.id].length; // set new id
-        currentConfig_1[node.id].push({
+        clnNode.dataset.index = currentConfig[node.id].length; // get array length
+        clnNode.id += currentConfig[node.id].length; // set new id
+        currentConfig[node.id].push({
             brand: null,
             name: null,
             description: null,
@@ -137,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     // Del Item
     function delItem(e) {
         var node = e.target.parentElement.parentNode;
-        delete currentConfig_1[node.dataset.configItemType][parseInt(node.dataset.index)]; // del item from array
+        delete currentConfig[node.dataset.configItemType][parseInt(node.dataset.index)]; // del item from array
         node.remove();
     }
 
@@ -158,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         var url = 'get-component.php?cmpt=' + curComponent;
 
         if (curComponent !== 'base' && swichState) {
-            var filter = currentConfig_1['base'][0][curComponent]; // get filter for MYSQL WHERE clause
+            var filter = currentConfig['base'][0][curComponent]; // get filter for MYSQL WHERE clause
             var url = url + '?filter=' + filter;
             // если база еще не выбрана то на рендер только строка с предупреждением
             xhrequest(url, curNode, curComponent);
@@ -186,6 +182,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         // Link with current node
         var componentsTable = document.querySelector('.components');
         componentsTable.dataset.node = curNode.id;
+        componentsTable.dataset.componentType = curComponent;
         componentsTable.dataset.nodeIndex = curNode.dataset.index;
 
         // Render rows
@@ -205,8 +202,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
             // Add component row 
             var row = document.createElement('tr');
             row.classList.add('components__item');
-            row.dataset.node = curNode.id;
-            row.dataset.nodeIndex = curNode.dataset.index;
 
             var tdName = '<td class="components__item-desc" data-shortname="' + componentShortName + '">' + componentName + '</td>';
             var tdPrice = '<td class="components__item-price" data-price="' + componentPrice + '">' + componentPrice + '&nbsp;$</td>';
