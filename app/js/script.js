@@ -37,7 +37,7 @@ var currentConfig = {
     }],
     ssd: [{
         brand: '',
-        name: '12',
+        name: '',
         description: '',
         quantity: null,
         price: null,
@@ -55,6 +55,7 @@ var currentConfig = {
 
 document.addEventListener('DOMContentLoaded', function (e) {
 
+    // Event listeners
     document.querySelector('.config').addEventListener('click', function (e) {
         if (e.target.classList.contains('config__item-icon_clear')) {
             if (e.target.parentElement.parentNode.dataset.iscloned == 'true') {
@@ -104,10 +105,37 @@ document.addEventListener('DOMContentLoaded', function (e) {
         var componentObj = currentConfig[componentType][index];
 
         var item = item.parentElement.parentElement;
-        componentObj.name = item.dataset.shortName;
+        componentObj.name = item.dataset.shortname;
         componentObj.price = item.dataset.price;
         componentObj.term = item.dataset.term;
+        componentObj.quantity = 1;
+
+        refreshData();
         hideModal();
+    }
+
+    // Refresh Data
+    function refreshData() {
+        var configItems = document.querySelectorAll('.config__item'); // get config items
+
+        // Fill config items
+        for(i=0; i<configItems.length; i++){
+            var itemType = configItems[i].dataset.configItemType;
+            var itemIndex = configItems[i].dataset.index;
+            var item = currentConfig[itemType][itemIndex]; // Config item
+
+            if(item.name == ''){
+                continue; // if there isn't data in config object, then skip this item
+            }
+            
+            configItems[i].children[0].children[1].textContent = item.name; // set name;
+            configItems[i].children[1].children[0].value = item.quantity; // set quantity;
+            configItems[i].children[1].children[0].disabled = false; // set quantity;
+            configItems[i].children[2].innerHTML = item.price + "&nbsp;$"; // set price;
+            configItems[i].children[3].innerHTML = item.term + "&nbsp;дн."; // set term;
+            
+        }
+        
     }
 
     // Add Item
@@ -144,6 +172,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
         rowItems[1].firstElementChild.disabled = true;
         rowItems[2].innerHTML = "—"; // item price
         rowItems[3].innerHTML = "—"; // item term
+
+
     }
 
     // Getting components list from JSON
@@ -202,10 +232,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
             // Add component row 
             var row = document.createElement('tr');
             row.classList.add('components__item');
+            row.dataset.shortname = componentShortName;
+            row.dataset.price = componentPrice;
+            row.dataset.term = componentAvailability;
 
-            var tdName = '<td class="components__item-desc" data-shortname="' + componentShortName + '">' + componentName + '</td>';
-            var tdPrice = '<td class="components__item-price" data-price="' + componentPrice + '">' + componentPrice + '&nbsp;$</td>';
-            var tdTerm = '<td class="components__item-term" data-term="' + componentAvailability + '">' + componentAvailability + '&nbsp;дн.</td>';
+            var tdName = '<td class="components__item-desc">' + componentName + '</td>';
+            var tdPrice = '<td class="components__item-price">' + componentPrice + '&nbsp;$</td>';
+            var tdTerm = '<td class="components__item-term">' + componentAvailability + '&nbsp;дн.</td>';
             var tdSelect = '<td class="components__item-select" title="Выбор компонента"><img class="components__item-select-icon" src="img/icon_add-blue.svg" title="Выбор компонента"></td>';
 
             row.innerHTML = tdName + tdPrice + tdTerm + tdSelect;
