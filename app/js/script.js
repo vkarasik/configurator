@@ -57,16 +57,22 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
     // Event listeners
     document.querySelector('.config').addEventListener('click', function (e) {
+
+        // set on clear button
         if (e.target.classList.contains('config__item-icon_clear')) {
+            // check if row is cloned
             if (e.target.parentElement.parentNode.dataset.iscloned == 'true') {
                 delItem(e);
             } else {
-                var rowItems = e.target.parentElement.parentElement.children;
-                clearItem(rowItems);
+                clearItem(e);
             }
-        } else if (e.target.classList.contains('config__item-icon_add')) {
+        }
+        // set on add button
+        else if (e.target.classList.contains('config__item-icon_add')) {
             addItem(e);
-        } else if (e.target.classList.contains('config__item-type-img') || e.target.classList.contains('config__item-type-name')) {
+        }
+        // set on icon and title
+        else if (e.target.classList.contains('config__item-type-img') || e.target.classList.contains('config__item-type-name')) {
             getData(e)
         }
     })
@@ -86,7 +92,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
         document.querySelector('body').classList.add('modal-open'); // prevent scroll body
         document.querySelector('.modal').classList.add('modal_show');
 
-        document.querySelector('.modal__head').innerHTML = e.target.parentElement.dataset.configItemTitle;
+        document.querySelector('.modal__head').innerHTML = e.firstElementChild.dataset.configItemTitle;
+
+
     }
 
     // Hide modal window
@@ -98,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
     // Chose Component
     function choseComponent(item) {
-        var table = document.querySelector('.components'); // get node info from data attr
+        var table = document.querySelector('.components'); // get nodeinfo from data attr
         var node = table.dataset.node;
         var componentType = table.dataset.componentType;
         var index = table.dataset.nodeIndex;
@@ -117,25 +125,28 @@ document.addEventListener('DOMContentLoaded', function (e) {
     // Refresh Data
     function refreshData() {
         var configItems = document.querySelectorAll('.config__item'); // get config items
+        var resultLine = document.querySelector('.result__item-description');
+        resultLine.textContent = '';
+
 
         // Fill config items
-        for(i=0; i<configItems.length; i++){
+        for (i = 0; i < configItems.length; i++) {
             var itemType = configItems[i].dataset.configItemType;
             var itemIndex = configItems[i].dataset.index;
             var item = currentConfig[itemType][itemIndex]; // Config item
 
-            if(item.name == ''){
+            if (item.name == '') {
                 continue; // if there isn't data in config object, then skip this item
             }
-            
+
             configItems[i].children[0].children[1].textContent = item.name; // set name;
             configItems[i].children[1].children[0].value = item.quantity; // set quantity;
             configItems[i].children[1].children[0].disabled = false; // set quantity;
             configItems[i].children[2].innerHTML = item.price + "&nbsp;$"; // set price;
             configItems[i].children[3].innerHTML = item.term + "&nbsp;дн."; // set term;
-            
+
+            resultLine.textContent += 'Hi';
         }
-        
     }
 
     // Add Item
@@ -154,7 +165,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
             price: null,
             term: null,
         }); // add new item into array
-        clearItem(clnNode.children); // clear item row
+        // clearItem(clnNode.children); // clear item row
+        clearItem(e); // clear item row
         document.querySelector('.config').insertBefore(clnNode, node.nextElementSibling); // add item on the page
     }
 
@@ -163,17 +175,27 @@ document.addEventListener('DOMContentLoaded', function (e) {
         var node = e.target.parentElement.parentNode;
         delete currentConfig[node.dataset.configItemType][parseInt(node.dataset.index)]; // del item from array
         node.remove();
+        refreshData();
+
     }
 
     // Clear Item
-    function clearItem(rowItems) {
+    function clearItem(e) {
+        var rowItems = e.target.parentElement.parentElement.children; // get items in row
+        var node = e.target.parentElement.parentElement.dataset.configItemType;
+        var currentObject = currentConfig[node][0];
+
         rowItems[0].children[1].innerHTML = rowItems[0].dataset.configItemTitle; // item type
         rowItems[1].firstElementChild.value = null; // item quantity
         rowItems[1].firstElementChild.disabled = true;
         rowItems[2].innerHTML = "—"; // item price
         rowItems[3].innerHTML = "—"; // item term
 
-
+        // clear info in currentConfig object
+        for (key in currentObject) {
+            currentObject[key] = '';
+        }
+        refreshData();
     }
 
     // Getting components list from JSON
@@ -254,34 +276,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
                 //subCategories[i + 1].remove(); // IE11+
             }
         }
-        showModal();
+        showModal(curNode);
     }
-
-
-    // Select data for rendering table
-    function selectionData(curComponentList, curNode, curComponent) {
-
-        // if (curComponent == 'base' || (curComponent != 'base' && !swichState)) {
-        //     renderTable(curComponentList, curComponent); // send full data to render
-        // } else if (curComponent != 'platform' && swichState) {
-        //     var currentPlatformRelevant = currentConfig.platform.relevant;
-        //     // Check if platform was not choosen yet
-        //     if (currentPlatformRelevant == '') {
-        //         alert('Сначала выберете платформу, или отключите подбор с учетом совместимости!');
-        //     } else {
-        //         // Delete unrelevant components
-        //         for (i = 0; i < curComponentList.length; ++i) {
-        //             var item = curComponentList[i].relevant;
-        //             var platform = currentPlatformRelevant;
-        //             if (item.indexOf(platform) == -1) { // check forall;
-        //                 curComponentList.splice(i, 1);
-        //             }
-        //         }
-        //         renderTable(curComponentList, curComponent);
-        //     }
-        // }
-    }
-
 
     // Get components list from DB
     // function getData(component) { //component = e
@@ -296,107 +292,5 @@ document.addEventListener('DOMContentLoaded', function (e) {
     //     }
     //     requestPrice.send();
     // }
-
-    // Select data for rendering table
-    // function selectionData(curComponentList, curComponent){
-    //     var swichState = document.getElementById('compatible').checked; // Check switch state
-
-    //     if(curComponent == 'platform' || (curComponent != 'platform' && !swichState)){
-    //         renderTable(curComponentList, curComponent); // Send full data to render
-    //     }
-    //     else if(curComponent != 'platform' && swichState){
-    //         var currentPlatformRelevant = currentConfig.platform.relevant;
-    //         // Check if platform was not choosen yet
-    //         if(currentPlatformRelevant == '') {
-    //             alert('Сначала выберете платформу, или отключите подбор с учетом совместимости!');
-    //         }
-    //         else{
-    //             // Delete unrelevant components
-    //             for(i=0; i < curComponentList.length; ++i){
-    //                 var item = curComponentList[i].relevant;
-    //                 var platform = currentPlatformRelevant;
-    //                 if(item.indexOf(platform) == -1){ // check forall;
-    //                     curComponentList.splice(i,1);
-    //                 }
-    //             }
-    //             renderTable(curComponentList, curComponent);
-    //         }
-    //     }
-    // }
-
-    // Render components table
-    // function renderTable(curComponentList, curComponent) {
-
-    //     for (i = 0; i < curComponentList.length; i++) {
-    //         var componentName = curComponentList[i].name + ' ('+ curComponentList[i].spec +')';
-    //         var componentShortName = curComponentList[i].name;
-    //         var componentPrice = curComponentList[i].price;
-    //         var componentAvailability = curComponentList[i].availability;
-    //         var componentSubcategory = curComponentList[i].subcategory;
-
-    //         // Add subcat row
-    //         var rowSubCat = document.createElement('tr');
-    //         rowSubCat.classList.add('subcat');
-    //         rowSubCat.innerHTML = '<td colspan="4">' + componentSubcategory + '</td>';
-    //         document.querySelector('.components-list tbody').appendChild(rowSubCat);
-
-    //         // Add component row 
-    //         var row = document.createElement('tr');
-    //         row.innerHTML = '<td class="name" data-shortname="' + componentShortName + '">' + componentName + '</td><td class="price">' + componentPrice + '</td><td class="availability">' + componentAvailability + '</td><td class="chose"><button>выбрать</button></td>';
-    //         document.querySelector('.components-list tbody').appendChild(row);
-    //     }
-
-    //     // Delete double subcats
-    //     var subCategories = document.querySelectorAll('.subcat');
-    //     for (i = 0; i < subCategories.length - 1; i++) { // Don't take last element
-    //         if (subCategories[i].innerHTML == subCategories[i + 1].innerHTML) {
-    //             var tbody = subCategories[i + 1].parentElement;
-    //             tbody.removeChild(subCategories[i + 1]);
-    //             //subCategories[i + 1].remove(); // IE11+
-    //         }
-    //     }
-
-    //     // Set addeventlisteners on buttons
-    //     document.querySelectorAll('.chose button').forEach(function (item) {
-    //         item.addEventListener('click', function (e) {
-    //             var shortName = e.currentTarget.parentElement.parentElement.children[0].dataset.shortname;
-    //             var price = e.currentTarget.parentElement.parentElement.children[1].innerHTML;
-    //             var availability = e.currentTarget.parentElement.parentElement.children[2].innerHTML;
-
-    //             if (currentConfig[curComponent] == undefined) {
-    //                 currentConfig[curComponent] = {};
-    //                 currentConfig[curComponent].name = shortName;
-    //                 currentConfig[curComponent].price = parseInt(price);
-    //                 currentConfig[curComponent].availability = parseInt(availability);
-    //             } else {
-
-    //             }
-
-    //             currentConfig[curComponent] = {};
-    //             currentConfig[curComponent].name = shortName;
-    //             currentConfig[curComponent].price = parseInt(price);
-    //             currentConfig[curComponent].availability = parseInt(availability);
-
-    //             var componenIitemChoice = document.createElement('div');
-    //             componenIitemChoice.classList.add('component-item-choice');
-
-    //             componenIitemChoice.innerHTML = '<img src="img/plus.svg" alt="" width="25px"><span>' + currentConfig[curComponent].name + '</span><img src="img/remove.svg" alt="" width="25px">';
-
-    //             var t = document.getElementById(curComponent);
-    //             t.appendChild(componenIitemChoice);
-
-    //             hideModal();
-    //         })
-    //     })
-
-    //     showModal(curComponent);
-    // }
-
-
-
-
-    // index добавленного элемента в дом 0
-    // index 1 
-    // при удалении можно брать индекс элемета в дом
 
 })
