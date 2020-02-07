@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     function refreshData() {
         var configItems = document.querySelectorAll('.config__item'); // get config items
         var resultLine = document.querySelector('.result__item-description');
-        resultLine.textContent = '';
+        var config = '';
 
 
         // Fill config items
@@ -145,9 +145,11 @@ document.addEventListener('DOMContentLoaded', function (e) {
             configItems[i].children[2].innerHTML = item.price + "&nbsp;$"; // set price;
             configItems[i].children[3].innerHTML = item.term + "&nbsp;дн."; // set term;
 
-            resultLine.textContent += 'Hi';
+            config += item.name + ' / '; // generate config
         }
-    }
+
+        resultLine.textContent = 'Сервер CDL [' + config + ' ТУ РБ 101290106.001-2017]'; // generate full result line
+    } 
 
     // Add Item
     function addItem(e) {
