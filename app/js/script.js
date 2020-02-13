@@ -113,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         var componentObj = currentConfig[componentType][index];
 
         var item = item.parentElement.parentElement;
+        // componentObj.name = String.prototype.toLocaleUpperCase.call(item.dataset.shortname);
         componentObj.name = item.dataset.shortname;
         componentObj.price = item.dataset.price;
         componentObj.term = item.dataset.term;
@@ -145,7 +146,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
             configItems[i].children[2].innerHTML = item.price + "&nbsp;$"; // set price;
             configItems[i].children[3].innerHTML = item.term + "&nbsp;дн."; // set term;
 
-            config += item.name + ' / '; // generate config
+
+            config += item.name + ' × ' + item.quantity + ' / '; // generate config
         }
 
         resultLine.textContent = 'Сервер CDL [' + config + ' ТУ РБ 101290106.001-2017]'; // generate full result line
@@ -241,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
         // Render rows
         for (i = 0; i < curComponentList.length; i++) {
-            var componentName = curComponentList[i].name + ' (' + curComponentList[i].spec + ')';
+            var componentName = curComponentList[i].name + ' (' + curComponentList[i].description + ')';
             var componentShortName = curComponentList[i].name;
             var componentPrice = curComponentList[i].price;
             var componentAvailability = curComponentList[i].availability;
