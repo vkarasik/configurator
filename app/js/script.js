@@ -77,8 +77,16 @@ document.addEventListener('DOMContentLoaded', function (e) {
         }
     })
 
-    document.querySelectorAll('.modal__close').forEach(function (e) {
-        e.addEventListener('click', hideModal);
+    document.querySelectorAll('.config__item').forEach(function (i) {
+        i.addEventListener('input', changeItemAmount)
+    })
+
+    // document.querySelectorAll('.config__item-quantity > input').forEach(function (i) {
+    //     i.addEventListener('keypress', checkNumber)
+    // })
+
+    document.querySelectorAll('.modal__close').forEach(function (i) {
+        i.addEventListener('click', hideModal);
     })
 
     document.querySelector('.components').addEventListener('click', function (e) {
@@ -86,6 +94,24 @@ document.addEventListener('DOMContentLoaded', function (e) {
             choseComponent(e.target);
         }
     })
+
+    // Check if it's number
+    function checkNumber(e){
+        if(e.keyCode < 48 || e.keyCode > 57){
+            return false;
+        }
+        
+    }
+
+    // Change Amount
+    function changeItemAmount(e) {
+        var value = e.target.value;
+        var component = e.currentTarget.dataset.configItemType;
+        var index = e.currentTarget.dataset.index;
+        currentConfig[component][index].quantity = value;
+
+        refreshData();
+    }
 
     // Show modal window
     function showModal(e) {
@@ -151,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         }
 
         resultLine.textContent = 'Сервер CDL [' + config + ' ТУ РБ 101290106.001-2017]'; // generate full result line
-    } 
+    }
 
     // Add Item
     function addItem(e) {
