@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
                 clearItem(e);
             }
         }
-        // set on add button
+        // set on addbutton
         else if (e.target.classList.contains('config__item-icon_add')) {
             addItem(e);
         }
@@ -75,15 +75,11 @@ document.addEventListener('DOMContentLoaded', function (e) {
         else if (e.target.classList.contains('config__item-type-img') || e.target.classList.contains('config__item-type-name')) {
             getData(e)
         }
+        // set on plus and minus icons
+        else if (e.target.classList.contains('config__item-quantity-button')) {
+            changeItemQuantity(e);
+        }
     })
-
-    document.querySelectorAll('.config__item').forEach(function (i) {
-        i.addEventListener('input', changeItemAmount)
-    })
-
-    // document.querySelectorAll('.config__item-quantity > input').forEach(function (i) {
-    //     i.addEventListener('keypress', checkNumber)
-    // })
 
     document.querySelectorAll('.modal__close').forEach(function (i) {
         i.addEventListener('click', hideModal);
@@ -95,21 +91,16 @@ document.addEventListener('DOMContentLoaded', function (e) {
         }
     })
 
-    // Check if it's number
-    function checkNumber(e){
-        if(e.keyCode < 48 || e.keyCode > 57){
-            return false;
+    // Change Quantity
+    function changeItemQuantity(e) {
+        var item = e.target.parentElement.parentElement.dataset.configItemType;
+        var index = e.target.parentElement.parentElement.dataset.index;
+
+        if (e.target.classList.contains('config__item-quantity-button_plus')) {
+            currentConfig[item][index].quantity += 1;
+        } else if (e.target.classList.contains('config__item-quantity-button_minus') && currentConfig[item][index].quantity > 1) {
+            currentConfig[item][index].quantity -= 1;
         }
-        
-    }
-
-    // Change Amount
-    function changeItemAmount(e) {
-        var value = e.target.value;
-        var component = e.currentTarget.dataset.configItemType;
-        var index = e.currentTarget.dataset.index;
-        currentConfig[component][index].quantity = value;
-
         refreshData();
     }
 
@@ -141,8 +132,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
         var item = item.parentElement.parentElement;
         // componentObj.name = String.prototype.toLocaleUpperCase.call(item.dataset.shortname);
         componentObj.name = item.dataset.shortname;
-        componentObj.price = item.dataset.price;
-        componentObj.term = item.dataset.term;
+        componentObj.price = parseInt(item.dataset.price);
+        componentObj.term = parseInt(item.dataset.term);
         componentObj.quantity = 1;
 
         refreshData();
@@ -152,8 +143,15 @@ document.addEventListener('DOMContentLoaded', function (e) {
     // Refresh Data
     function refreshData() {
         var configItems = document.querySelectorAll('.config__item'); // get config items
-        var resultLine = document.querySelector('.result__item-description');
+
+        var resultName = document.querySelector('.result__item-description');
+        var resultQuantity = document.querySelector('.result__item-quantity-number');
+        var resultPrice = document.querySelector('.result__item-price');
+        var resultTerm = document.querySelector('.result__item-term');
+
         var config = '';
+        var price = 0;
+        var term = [];
 
 
         // Fill config items
@@ -167,16 +165,19 @@ document.addEventListener('DOMContentLoaded', function (e) {
             }
 
             configItems[i].children[0].children[1].textContent = item.name; // set name;
-            configItems[i].children[1].children[0].value = item.quantity; // set quantity;
-            configItems[i].children[1].children[0].disabled = false; // set quantity;
-            configItems[i].children[2].innerHTML = item.price + "&nbsp;$"; // set price;
+            configItems[i].children[1].children[1].innerHTML = item.quantity; // set quantity
+            configItems[i].children[2].innerHTML = item.price * item.quantity + "&nbsp;$"; // set price;
             configItems[i].children[3].innerHTML = item.term + "&nbsp;дн."; // set term;
 
 
-            config += item.name + ' × ' + item.quantity + ' / '; // generate config
+            config += item.name + ' × ' + item.quantity + ' / '; // generate config name
+            price += item.price * item.quantity;
+            term.push(item.term);
         }
 
-        resultLine.textContent = 'Сервер CDL [' + config + ' ТУ РБ 101290106.001-2017]'; // generate full result line
+        resultName.textContent = 'Сервер CDL [' + config + ' ТУ РБ 101290106.001-2017]'; // generate full result line
+        resultPrice.innerHTML = price + "&nbsp;$";
+        resultTerm.innerHTML = term.length + "&nbsp;дн."; // взять максимум из массива
     }
 
     // Add Item
@@ -188,12 +189,12 @@ document.addEventListener('DOMContentLoaded', function (e) {
         clnNode.dataset.index = currentConfig[node.id].length; // get array length
         clnNode.id += currentConfig[node.id].length; // set new id
         currentConfig[node.id].push({
-            brand: null,
-            name: null,
-            description: null,
-            quantity: null,
-            price: null,
-            term: null,
+            brand: '',
+            name: '',
+            description: '',
+            quantity: 0,
+            price: 0,
+            term: 0,
         }); // add new item into array
         // clearItem(clnNode.children); // clear item row
         clearItem(e); // clear item row
@@ -216,8 +217,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
         var currentObject = currentConfig[node][0];
 
         rowItems[0].children[1].innerHTML = rowItems[0].dataset.configItemTitle; // item type
-        rowItems[1].firstElementChild.value = null; // item quantity
-        rowItems[1].firstElementChild.disabled = true;
+        // rowItems[1].firstElementChild.value = null; // item quantity
+        // rowItems[1].firstElementChild.disabled = true;
+        rowItems[1].children[1].innerHTML = 0;
         rowItems[2].innerHTML = "—"; // item price
         rowItems[3].innerHTML = "—"; // item term
 
