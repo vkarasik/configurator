@@ -61,21 +61,22 @@ document.addEventListener('DOMContentLoaded', function (e) {
         // set on clear button
         if (e.target.classList.contains('config__item-icon_clear')) {
             // check if row is cloned
-            if (e.target.parentElement.parentNode.dataset.iscloned == 'true') {
+            if (e.target.parentElement.parentNode.dataset.iscloned === 'true') {
                 delItem(e);
             } else {
-                clearItem(e);
+                var node = e.target.parentElement.parentElement; // node to be cleaned
+                clearItem(node);
             }
         }
         // set on addbutton
         else if (e.target.classList.contains('config__item-icon_add')) {
             addItem(e);
         }
-        // set on icon and title
+        // set on component icon and title
         else if (e.target.classList.contains('config__item-type-img') || e.target.classList.contains('config__item-type-name')) {
             getData(e)
         }
-        // set on plus and minus icons
+        // set on plus and minus icons for quantity
         else if (e.target.classList.contains('config__item-quantity-button')) {
             changeItemQuantity(e);
         }
@@ -86,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     })
 
     document.querySelector('.components').addEventListener('click', function (e) {
-        if (e.target.className == 'components__item-select-icon') {
+        if (e.target.className === 'components__item-select-icon') {
             choseComponent(e.target);
         }
     })
@@ -97,9 +98,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
         var index = e.target.parentElement.parentElement.dataset.index;
 
         if (e.target.classList.contains('config__item-quantity-button_plus')) {
-            currentConfig[item][index].quantity += 1;
+            ++currentConfig[item][index].quantity; // increment quantity
         } else if (e.target.classList.contains('config__item-quantity-button_minus') && currentConfig[item][index].quantity > 1) {
-            currentConfig[item][index].quantity -= 1;
+            --currentConfig[item][index].quantity; // decrement quantity
         }
         refreshData();
     }
@@ -108,10 +109,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     function showModal(e) {
         document.querySelector('body').classList.add('modal-open'); // prevent scroll body
         document.querySelector('.modal').classList.add('modal_show');
-
         document.querySelector('.modal__head').innerHTML = e.firstElementChild.dataset.configItemTitle;
-
-
     }
 
     // Hide modal window
@@ -160,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
             var itemIndex = configItems[i].dataset.index;
             var item = currentConfig[itemType][itemIndex]; // Config item
 
-            if (item.name == '') {
+            if (item.name === '') {
                 continue; // if there isn't data in config object, then skip this item
             }
 
@@ -177,27 +175,28 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
         resultName.textContent = 'Сервер CDL [' + config + ' ТУ РБ 101290106.001-2017]'; // generate full result line
         resultPrice.innerHTML = price + "&nbsp;$";
-        resultTerm.innerHTML = term.length + "&nbsp;дн."; // взять максимум из массива
+        resultTerm.innerHTML = (term.length > 0 ? Math.max.apply(Math, term) : 0) + "&nbsp;дн."; //check if there are data in array and get max from array, or Math.max(...term) for ES6
     }
 
     // Add Item
     function addItem(e) {
-        var node = e.target.parentElement.parentNode; // why node? might be better Element?
-        var clnNode = node.cloneNode(true);
-        clnNode.dataset.iscloned = 'true'; // set attr for deleteItem
+        var node = e.target.parentElement.parentElement; // get current node
+        var clnNode = node.cloneNode(true); // clone with children
+        clnNode.dataset.iscloned = 'true'; // set this attr for deleteItem()
         clnNode.children[4].children[0].remove(); // delete add button
-        clnNode.dataset.index = currentConfig[node.id].length; // get array length
+        clnNode.dataset.index = currentConfig[node.id].length; // get array length from currentConfig
         clnNode.id += currentConfig[node.id].length; // set new id
-        currentConfig[node.id].push({
+
+        currentConfig[node.id].push({ // add new item into currentConfig array
             brand: '',
             name: '',
             description: '',
             quantity: 0,
             price: 0,
             term: 0,
-        }); // add new item into array
+        });
         // clearItem(clnNode.children); // clear item row
-        clearItem(e); // clear item row
+        clearItem(clnNode); // clear item row
         document.querySelector('.config').insertBefore(clnNode, node.nextElementSibling); // add item on the page
     }
 
@@ -207,21 +206,19 @@ document.addEventListener('DOMContentLoaded', function (e) {
         delete currentConfig[node.dataset.configItemType][parseInt(node.dataset.index)]; // del item from array
         node.remove();
         refreshData();
-
     }
 
     // Clear Item
-    function clearItem(e) {
-        var rowItems = e.target.parentElement.parentElement.children; // get items in row
-        var node = e.target.parentElement.parentElement.dataset.configItemType;
-        var currentObject = currentConfig[node][0];
+    function clearItem(node) {
+        var rowItems = node.children; // get items from component row
+        var itemType = node.dataset.configItemType;
+        var itemIndex = node.dataset.index;
+        var currentObject = currentConfig[itemType][itemIndex]; // get current component object
 
-        rowItems[0].children[1].innerHTML = rowItems[0].dataset.configItemTitle; // item type
-        // rowItems[1].firstElementChild.value = null; // item quantity
-        // rowItems[1].firstElementChild.disabled = true;
-        rowItems[1].children[1].innerHTML = 0;
-        rowItems[2].innerHTML = "—"; // item price
-        rowItems[3].innerHTML = "—"; // item term
+        rowItems[0].children[1].innerHTML = rowItems[0].dataset.configItemTitle; // refresh item type
+        rowItems[1].children[1].innerHTML = 0; // clear quantity
+        rowItems[2].innerHTML = "—"; // clear price
+        rowItems[3].innerHTML = "—"; // clear term
 
         // clear info in currentConfig object
         for (key in currentObject) {
@@ -238,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         var url = 'get-component.php?cmpt=' + curComponent;
 
         if (curComponent !== 'base' && swichState) {
-            var filter = currentConfig['base'][0][curComponent]; // get filter for MYSQL WHERE clause
+            var filter = currentConfig['base'][0][curComponent]; // get condition for MYSQL WHERE clause
             var url = url + '?filter=' + filter;
             // если база еще не выбрана то на рендер только строка с предупреждением
             xhrequest(url, curNode, curComponent);
@@ -302,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         // Delete double subcats
         var subCategories = document.querySelectorAll('.components__category');
         for (i = 0; i < subCategories.length - 1; i++) { // Don't take last element
-            if (subCategories[i].innerHTML == subCategories[i + 1].innerHTML) {
+            if (subCategories[i].innerHTML === subCategories[i + 1].innerHTML) {
                 var tbody = subCategories[i + 1].parentElement;
                 tbody.removeChild(subCategories[i + 1]);
                 //subCategories[i + 1].remove(); // IE11+
