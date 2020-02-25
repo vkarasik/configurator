@@ -53,6 +53,13 @@ var currentConfig = {
     }]
 };
 
+var resultConfig = {
+    config: '',
+    quantity: 0,
+    price: 0,
+    term: 0
+}
+
 document.addEventListener('DOMContentLoaded', function (e) {
 
     // Event listeners
@@ -76,9 +83,16 @@ document.addEventListener('DOMContentLoaded', function (e) {
         else if (e.target.classList.contains('config__item-type-img') || e.target.classList.contains('config__item-type-name')) {
             getData(e)
         }
-        // set on plus and minus icons for quantity
+        // set on plus and minus icons for item quantity
         else if (e.target.classList.contains('config__item-quantity-button')) {
             changeItemQuantity(e);
+        }
+    })
+
+    document.querySelector('.result').addEventListener('click', function(e){
+        // set on plus and minus icons for config quantitty
+        if (e.target.classList.contains('result__item-quantity-button')) {
+            changeConfigQuantity(e);
         }
     })
 
@@ -92,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         }
     })
 
-    // Change Quantity
+    // Change Item Quantity
     function changeItemQuantity(e) {
         var item = e.target.parentElement.parentElement.dataset.configItemType;
         var index = e.target.parentElement.parentElement.dataset.index;
@@ -103,6 +117,23 @@ document.addEventListener('DOMContentLoaded', function (e) {
             --currentConfig[item][index].quantity; // decrement quantity
         }
         refreshData();
+    }
+
+    // Change Config Quantity
+    function changeConfigQuantity(e){
+        var resultQuantity = document.querySelector('.result__item-quantity-number');
+        var resultPrice = document.querySelector('.result__item-price');
+
+        if(e.target.classList.contains('result__item-quantity-button_plus')){
+            ++resultConfig.quantity; // increment result quantity
+            resultQuantity.innerHTML = resultConfig.quantity;
+            resultPrice.innerHTML = resultConfig.price * resultConfig.quantity + "&nbsp;$";
+        }
+        else if(e.target.classList.contains('result__item-quantity-button_minus') && parseInt(resultQuantity.innerHTML) > 1){
+            --resultConfig.quantity; // decrement result quantity
+            resultQuantity.innerHTML = resultConfig.quantity;
+            resultPrice.innerHTML = resultConfig.price * resultConfig.quantity + "&nbsp;$";
+        }
     }
 
     // Show modal window
@@ -147,9 +178,15 @@ document.addEventListener('DOMContentLoaded', function (e) {
         var resultPrice = document.querySelector('.result__item-price');
         var resultTerm = document.querySelector('.result__item-term');
 
-        var config = '';
-        var price = 0;
-        var term = [];
+        // var config = '';
+        // var price = 0;
+        // var term = [];
+
+        resultConfig.config = '';
+        resultConfig.price = 0;
+        resultConfig.quantity = 0;
+        resultConfig.term = [];
+
 
 
         // Fill config items
@@ -168,14 +205,16 @@ document.addEventListener('DOMContentLoaded', function (e) {
             configItems[i].children[3].innerHTML = item.term + "&nbsp;дн."; // set term;
 
 
-            config += item.name + ' × ' + item.quantity + ' / '; // generate config name
-            price += item.price * item.quantity;
-            term.push(item.term);
+            resultConfig.config += item.name + ' × ' + item.quantity + ' / '; // generate config name
+            resultConfig.price += item.price * item.quantity;
+            resultConfig.term.push(item.term);
         }
 
-        resultName.textContent = 'Сервер CDL [' + config + ' ТУ РБ 101290106.001-2017]'; // generate full result line
-        resultPrice.innerHTML = price + "&nbsp;$";
-        resultTerm.innerHTML = (term.length > 0 ? Math.max.apply(Math, term) : 0) + "&nbsp;дн."; //check if there are data in array and get max from array, or Math.max(...term) for ES6
+        resultName.textContent = 'Сервер CDL [' + resultConfig.config + ' ТУ РБ 101290106.001-2017]'; // generate full result line
+        resultQuantity.innerHTML = resultConfig.price > 0 ? '1' : '0';
+        resultConfig.quantity = resultConfig.price > 0 ? 1 : 0;
+        resultPrice.innerHTML = resultConfig.price + "&nbsp;$";
+        resultTerm.innerHTML = (resultConfig.term.length > 0 ? Math.max.apply(Math, resultConfig.term) : 0) + "&nbsp;дн."; //check if there are data in array and get max from array, or Math.max(...term) for ES6
     }
 
     // Add Item
