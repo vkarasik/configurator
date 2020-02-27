@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         }
     })
 
-    document.querySelector('.result').addEventListener('click', function(e){
+    document.querySelector('.result').addEventListener('click', function (e) {
         // set on plus and minus icons for config quantitty
         if (e.target.classList.contains('result__item-quantity-button')) {
             changeConfigQuantity(e);
@@ -105,6 +105,31 @@ document.addEventListener('DOMContentLoaded', function (e) {
             choseComponent(e.target);
         }
     })
+    document.querySelector('.button_copy').addEventListener('click', copyConfig)
+
+    // Copy to clipboard
+    function copyConfig(e) {
+        var node = document.querySelector(".result__item-description");
+
+        // Using Range Object
+        // var range = new Range();
+        // range.setStart(node, 0);
+        // range.setEnd(node, 1);
+        // document.getSelection().removeAllRanges();
+        // document.getSelection().addRange(range);
+
+        // Using Selection Object
+        document.getSelection().removeAllRanges();
+        document.getSelection().selectAllChildren(node);
+
+        document.execCommand('copy');
+
+        e.target.innerHTML = "Скопировано";
+        setTimeout(function(){
+            e.target.innerHTML = "Копировать";
+        },1000)
+
+    }
 
     // Change Item Quantity
     function changeItemQuantity(e) {
@@ -120,16 +145,15 @@ document.addEventListener('DOMContentLoaded', function (e) {
     }
 
     // Change Config Quantity
-    function changeConfigQuantity(e){
+    function changeConfigQuantity(e) {
         var resultQuantity = document.querySelector('.result__item-quantity-number');
         var resultPrice = document.querySelector('.result__item-price');
 
-        if(e.target.classList.contains('result__item-quantity-button_plus')){
+        if (e.target.classList.contains('result__item-quantity-button_plus')) {
             ++resultConfig.quantity; // increment result quantity
             resultQuantity.innerHTML = resultConfig.quantity;
             resultPrice.innerHTML = resultConfig.price * resultConfig.quantity + "&nbsp;$";
-        }
-        else if(e.target.classList.contains('result__item-quantity-button_minus') && parseInt(resultQuantity.innerHTML) > 1){
+        } else if (e.target.classList.contains('result__item-quantity-button_minus') && parseInt(resultQuantity.innerHTML) > 1) {
             --resultConfig.quantity; // decrement result quantity
             resultQuantity.innerHTML = resultConfig.quantity;
             resultPrice.innerHTML = resultConfig.price * resultConfig.quantity + "&nbsp;$";
