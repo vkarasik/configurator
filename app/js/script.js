@@ -6,7 +6,8 @@ var currentConfig = {
         cpu: null,
         ram: null,
         hdd: null,
-        ssd: '212',
+        ssd: null,
+        options: null,
         quantity: null,
         price: null,
         term: null,
@@ -125,9 +126,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
         document.execCommand('copy');
 
         e.target.innerHTML = "Скопировано";
-        setTimeout(function(){
+        setTimeout(function () {
             e.target.innerHTML = "Копировать";
-        },1000)
+        }, 1000)
 
     }
 
@@ -171,26 +172,31 @@ document.addEventListener('DOMContentLoaded', function (e) {
     function hideModal() {
         document.querySelector('.modal').classList.remove('modal_show');
         document.querySelector('body').classList.remove('modal-open'); // allow scroll body
-        document.querySelector('.components tbody').innerHTML = ""; // clean content inside
+        document.querySelector('.components tbody').innerHTML = ""; // clean content inside when closing
     }
 
     // Chose Component
     function choseComponent(item) {
-        var table = document.querySelector('.components'); // get nodeinfo from data attr
-        var node = table.dataset.node;
-        var componentType = table.dataset.componentType;
+        var table = document.querySelector('.components');
+        var node = table.dataset.node; // get current component type
+        // var componentType = table.dataset.componentType;
         var index = table.dataset.nodeIndex;
-        var componentObj = currentConfig[componentType][index];
+        // var componentObj = currentConfig[componentType][index];
 
-        var item = item.parentElement.parentElement;
+        var itemId = item.parentElement.parentElement.dataset.componentid;
+        // var url = 'get-component.php?cmpt=' + node;
+        var url = 'get-component.php?cmpt=' + node + '&cond=' + itemId;
+        // var item = item.parentElement.parentElement;
         // componentObj.name = String.prototype.toLocaleUpperCase.call(item.dataset.shortname);
-        componentObj.name = item.dataset.shortname;
-        componentObj.price = parseInt(item.dataset.price);
-        componentObj.term = parseInt(item.dataset.term);
-        componentObj.quantity = 1;
+        var test = xhrequest1(url);
 
-        refreshData();
-        hideModal();
+        // componentObj.name = item.dataset.shortname;
+        // componentObj.price = parseInt(item.dataset.price);
+        // componentObj.term = parseInt(item.dataset.term);
+        // componentObj.quantity = 1;
+
+        // refreshData();
+        // hideModal();
     }
 
     // Refresh Data
@@ -310,15 +316,38 @@ document.addEventListener('DOMContentLoaded', function (e) {
     // Sending request
     function xhrequest(url, curNode, curComponent) {
 
+        // var requestPrice = new XMLHttpRequest();
+        // requestPrice.open('GET', 'json/price.json', true);
+        // requestPrice.onload = function () {
+        //     var data = JSON.parse(this.response);
+        //     var curComponentList = data[curComponent];
+        //     renderTable(curComponentList, curNode, curComponent);
+        // }
+        // requestPrice.send();
+
         var requestPrice = new XMLHttpRequest();
-        requestPrice.open('GET', 'json/price.json', true);
+        requestPrice.open('GET', url, true);
         requestPrice.onload = function () {
             var data = JSON.parse(this.response);
-            var curComponentList = data[curComponent];
+            var curComponentList = data;
             renderTable(curComponentList, curNode, curComponent);
         }
         requestPrice.send();
     }
+
+    // Sending request
+    function xhrequest1(url) {
+        var data;
+        var request = new XMLHttpRequest();
+        request.open('GET', url, false);
+        request.onload = function () {
+            data = JSON.parse(this.response);
+        }
+        request.send();
+        return data;
+    }
+
+
 
     // Rendering table
     function renderTable(curComponentList, curNode, curComponent) {
@@ -331,10 +360,11 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
         // Render rows
         for (i = 0; i < curComponentList.length; i++) {
-            var componentName = curComponentList[i].name + ' (' + curComponentList[i].description + ')';
-            var componentShortName = curComponentList[i].name;
+            var componentId = curComponentList[i][curComponent + '_id'];
+            var componentName = curComponentList[i].name;
+            var componentDescription = curComponentList[i].name + ' (' + curComponentList[i].description + ')';
             var componentPrice = curComponentList[i].price;
-            var componentAvailability = curComponentList[i].availability;
+            var componentTerm = curComponentList[i].term;
             var componentSubcategory = curComponentList[i].subcategory;
 
             // Add subcat row
@@ -346,13 +376,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
             // Add component row 
             var row = document.createElement('tr');
             row.classList.add('components__item');
-            row.dataset.shortname = componentShortName;
+            row.dataset.shortname = componentName;
             row.dataset.price = componentPrice;
-            row.dataset.term = componentAvailability;
+            row.dataset.term = componentTerm;
+            row.dataset.componentid = componentId;
 
-            var tdName = '<td class="components__item-desc">' + componentName + '</td>';
+            var tdName = '<td class="components__item-desc">' + componentDescription + '</td>';
             var tdPrice = '<td class="components__item-price">' + componentPrice + '&nbsp;$</td>';
-            var tdTerm = '<td class="components__item-term">' + componentAvailability + '&nbsp;дн.</td>';
+            var tdTerm = '<td class="components__item-term">' + componentTerm + '&nbsp;дн.</td>';
             var tdSelect = '<td class="components__item-select" title="Выбор компонента"><img class="components__item-select-icon" src="img/icon_add-blue.svg" title="Выбор компонента"></td>';
 
             row.innerHTML = tdName + tdPrice + tdTerm + tdSelect;

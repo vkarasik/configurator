@@ -3,9 +3,15 @@ require 'config/db.php';
 
 // Current Component
 $componet = $_GET['cmpt'];
+$condition = $_GET['cond'];
 
 // Create Query
-$query = "SELECT * FROM $componet WHERE ";
+if(isset($condition)){
+    $query = "SELECT * FROM $componet WHERE cpu_id = $condition";
+}else{
+    $query = "SELECT * FROM $componet";
+}
+
 
 // Get Result
 $result = mysqli_query($conn, $query);
