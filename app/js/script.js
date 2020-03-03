@@ -1,57 +1,10 @@
 var currentConfig = {
-    base: [{
-        brand: '',
-        name: '',
-        description: '',
-        cpu: null,
-        ram: null,
-        hdd: null,
-        ssd: null,
-        options: null,
-        quantity: null,
-        price: null,
-        term: null,
-    }],
-    cpu: [{
-        brand: '',
-        name: '',
-        description: '',
-        quantity: null,
-        price: null,
-        term: null,
-    }],
-    ram: [{
-        brand: '',
-        name: '',
-        description: '',
-        quantity: null,
-        price: null,
-        term: null,
-    }],
-    hdd: [{
-        brand: '',
-        name: '',
-        description: '',
-        quantity: null,
-        price: null,
-        term: null,
-    }],
-    ssd: [{
-        brand: '',
-        name: '',
-        description: '',
-        quantity: null,
-        price: null,
-        term: null,
-    }],
-    options: [{
-        brand: '',
-        name: '',
-        description: '',
-        quantity: null,
-        price: null,
-        term: null,
-    }]
+    base: [],
+    cpu: [],
+    ram: [],
+    hdd: [],
+    ssd: [],
+    options: []
 };
 
 var resultConfig = {
@@ -129,7 +82,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
         setTimeout(function () {
             e.target.innerHTML = "Копировать";
         }, 1000)
-
     }
 
     // Change Item Quantity
@@ -178,25 +130,18 @@ document.addEventListener('DOMContentLoaded', function (e) {
     // Chose Component
     function choseComponent(item) {
         var table = document.querySelector('.components');
-        var node = table.dataset.node; // get current component type
-        // var componentType = table.dataset.componentType;
-        var index = table.dataset.nodeIndex;
-        // var componentObj = currentConfig[componentType][index];
+        var componentType = table.dataset.componentType; // get component type
+        var index = table.dataset.nodeIndex; // get index of calling component
+        var componentId = item.parentElement.parentElement.dataset.componentid; // get component id for request
+        var url = 'get-component.php?cmpt=' + componentType + '&id=' + componentId;
 
-        var itemId = item.parentElement.parentElement.dataset.componentid;
-        // var url = 'get-component.php?cmpt=' + node;
-        var url = 'get-component.php?cmpt=' + node + '&cond=' + itemId;
-        // var item = item.parentElement.parentElement;
-        // componentObj.name = String.prototype.toLocaleUpperCase.call(item.dataset.shortname);
-        var test = xhrequest1(url);
+        var component = getItem(url); // get element from server
+        component.quantity = 1; // set quantity
 
-        // componentObj.name = item.dataset.shortname;
-        // componentObj.price = parseInt(item.dataset.price);
-        // componentObj.term = parseInt(item.dataset.term);
-        // componentObj.quantity = 1;
+        currentConfig[componentType].splice(index, 1, component); // insert item
 
-        // refreshData();
-        // hideModal();
+        refreshData();
+        hideModal();
     }
 
     // Refresh Data
@@ -208,16 +153,10 @@ document.addEventListener('DOMContentLoaded', function (e) {
         var resultPrice = document.querySelector('.result__item-price');
         var resultTerm = document.querySelector('.result__item-term');
 
-        // var config = '';
-        // var price = 0;
-        // var term = [];
-
         resultConfig.config = '';
         resultConfig.price = 0;
         resultConfig.quantity = 0;
         resultConfig.term = [];
-
-
 
         // Fill config items
         for (i = 0; i < configItems.length; i++) {
@@ -225,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
             var itemIndex = configItems[i].dataset.index;
             var item = currentConfig[itemType][itemIndex]; // Config item
 
-            if (item.name === '') {
+            if (item === undefined) {
                 continue; // if there isn't data in config object, then skip this item
             }
 
@@ -234,10 +173,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
             configItems[i].children[2].innerHTML = item.price * item.quantity + "&nbsp;$"; // set price;
             configItems[i].children[3].innerHTML = item.term + "&nbsp;дн."; // set term;
 
-
-            resultConfig.config += item.name + ' × ' + item.quantity + ' / '; // generate config name
-            resultConfig.price += item.price * item.quantity;
-            resultConfig.term.push(item.term);
+            resultConfig.config += item.name + ' × ' + item.quantity + ' / '; // generate result config name
+            resultConfig.price += item.price * item.quantity; // calculate result config price
+            resultConfig.term.push(item.term); // push terms to calculate max term
         }
 
         resultName.textContent = 'Сервер CDL [' + resultConfig.config + ' ТУ РБ 101290106.001-2017]'; // generate full result line
@@ -250,21 +188,16 @@ document.addEventListener('DOMContentLoaded', function (e) {
     // Add Item
     function addItem(e) {
         var node = e.target.parentElement.parentElement; // get current node
+        if (currentConfig[node.dataset.configItemType].length == 0) {
+            alert("Сначала выберите первый диск");
+            return;
+        }
         var clnNode = node.cloneNode(true); // clone with children
         clnNode.dataset.iscloned = 'true'; // set this attr for deleteItem()
         clnNode.children[4].children[0].remove(); // delete add button
         clnNode.dataset.index = currentConfig[node.id].length; // get array length from currentConfig
         clnNode.id += currentConfig[node.id].length; // set new id
 
-        currentConfig[node.id].push({ // add new item into currentConfig array
-            brand: '',
-            name: '',
-            description: '',
-            quantity: 0,
-            price: 0,
-            term: 0,
-        });
-        // clearItem(clnNode.children); // clear item row
         clearItem(clnNode); // clear item row
         document.querySelector('.config').insertBefore(clnNode, node.nextElementSibling); // add item on the page
     }
@@ -272,27 +205,24 @@ document.addEventListener('DOMContentLoaded', function (e) {
     // Del Item
     function delItem(e) {
         var node = e.target.parentElement.parentNode;
-        delete currentConfig[node.dataset.configItemType][parseInt(node.dataset.index)]; // del item from array
+        delete currentConfig[node.dataset.configItemType][parseInt(node.dataset.index)]; // delete item from array
         node.remove();
         refreshData();
     }
 
     // Clear Item
     function clearItem(node) {
-        var rowItems = node.children; // get items from component row
+        var items = node.children; // get cells from component row
         var itemType = node.dataset.configItemType;
         var itemIndex = node.dataset.index;
-        var currentObject = currentConfig[itemType][itemIndex]; // get current component object
 
-        rowItems[0].children[1].innerHTML = rowItems[0].dataset.configItemTitle; // refresh item type
-        rowItems[1].children[1].innerHTML = 0; // clear quantity
-        rowItems[2].innerHTML = "—"; // clear price
-        rowItems[3].innerHTML = "—"; // clear term
+        delete currentConfig[itemType][itemIndex]; // delete object by index from currentConfig
 
-        // clear info in currentConfig object
-        for (key in currentObject) {
-            currentObject[key] = '';
-        }
+        items[0].children[1].innerHTML = items[0].dataset.configItemTitle; // reset item name to title
+        items[1].children[1].innerHTML = 0; // clear quantity
+        items[2].innerHTML = "—"; // clear price
+        items[3].innerHTML = "—"; // clear term
+
         refreshData();
     }
 
@@ -304,9 +234,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
         var url = 'get-component.php?cmpt=' + curComponent;
 
         if (curComponent !== 'base' && swichState) {
+            if(currentConfig['base'][0] == undefined){
+                alert("platform first");
+                return;
+            }
             var filter = currentConfig['base'][0][curComponent]; // get condition for MYSQL WHERE clause
-            var url = url + '?filter=' + filter;
+            var url = url + '&filter=' + '"' + filter + '"';
             // если база еще не выбрана то на рендер только строка с предупреждением
+
             xhrequest(url, curNode, curComponent);
         } else {
             xhrequest(url, curNode, curComponent);
@@ -336,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     }
 
     // Sending request
-    function xhrequest1(url) {
+    function getItem(url) {
         var data;
         var request = new XMLHttpRequest();
         request.open('GET', url, false);
@@ -344,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
             data = JSON.parse(this.response);
         }
         request.send();
-        return data;
+        return data[0];
     }
 
 

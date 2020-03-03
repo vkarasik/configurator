@@ -3,12 +3,17 @@ require 'config/db.php';
 
 // Current Component
 $componet = $_GET['cmpt'];
-$condition = $_GET['cond'];
+$filter = $_GET['filter'];
+$condition = $_GET['id'];
+$id = $componet . "_id";
 
 // Create Query
 if(isset($condition)){
-    $query = "SELECT * FROM $componet WHERE cpu_id = $condition";
-}else{
+    $query = "SELECT * FROM $componet WHERE $id = $condition";
+}elseif(isset($filter)){
+    $query = "SELECT * FROM $componet WHERE type = $filter";
+}
+else{
     $query = "SELECT * FROM $componet";
 }
 
@@ -28,4 +33,4 @@ foreach ($components as $key => $value) {
 }
 
 // Return JSON from $data array
-echo json_encode($data);
+echo json_encode($data, JSON_NUMERIC_CHECK);
