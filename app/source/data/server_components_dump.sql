@@ -232,9 +232,9 @@ CREATE TABLE `ram` (
 INSERT INTO `ram` (`ram_id`, `name`, `description`, `subcategory`, `type`, `price`, `term`, `link`) VALUES
 (1, 'DDR4 ECC 8GB', '8GB, DDR4 UDIMM ECC, 2400Mhz', 'Для серверов с процессорами E3/E', 'ECC', '50.0', 7, ''),
 (2, 'DDR4 ECC 16GB', '16GB, DDR4 UDIMM ECC, 2400Mhz', 'Для серверов с процессорами E3/E', 'ECC', '90.0', 7, ''),
-(3, 'DDR4 RDIMM 8GB', '8GB, DDR4 RDIMM, 2400Mhz', 'Для серверов с процессорами E5-2600 и Xeon Scalable', 'ECC REG', '60.0', 14, ''),
-(4, 'DDR4 RDIMM 16GB', '16GB, DDR4 RDIMM, 2400Mhz', 'Для серверов с процессорами E5-2600 и Xeon Scalable', 'ECC REG', '95.0', 7, ''),
-(5, 'DDR4 RDIMM 32GB', '32GB, DDR4 RDIMM, 2400Mhz', 'Для серверов с процессорами E5-2600 и Xeon Scalable', 'ECC REG', '170.0', 7, '');
+(3, 'DDR4 RDIMM 8GB', '8GB, DDR4 RDIMM, 2400Mhz', 'Для серверов с процессорами E5-2600 и Xeon Scalable', 'ECCREG', '60.0', 14, ''),
+(4, 'DDR4 RDIMM 16GB', '16GB, DDR4 RDIMM, 2400Mhz', 'Для серверов с процессорами E5-2600 и Xeon Scalable', 'ECCREG', '95.0', 7, ''),
+(5, 'DDR4 RDIMM 32GB', '32GB, DDR4 RDIMM, 2400Mhz', 'Для серверов с процессорами E5-2600 и Xeon Scalable', 'ECCREG', '170.0', 7, '');
 
 -- --------------------------------------------------------
 

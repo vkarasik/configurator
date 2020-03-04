@@ -4,16 +4,17 @@ require 'config/db.php';
 // Current Component
 $componet = $_GET['cmpt'];
 $filter = $_GET['filter'];
-$condition = $_GET['id'];
-$id = $componet . "_id";
+$id = $_GET['id'];
 
 // Create Query
-if(isset($condition)){
-    $query = "SELECT * FROM $componet WHERE $id = $condition";
-}elseif(isset($filter)){
-    $query = "SELECT * FROM $componet WHERE type = $filter";
-}
-else{
+if (isset($id)) {
+    $id = $componet . "_id";
+    $query = "SELECT * FROM $componet WHERE $id = $id";
+} elseif (isset($filter)) {
+    $filter = explode('/', $filter); // turn into arr
+    $filter = ('"' . implode('", "', array_map(strval, $filter)) . '"'); // turn into string with comma
+    $query = "SELECT * FROM $componet WHERE type IN ($filter)";
+} else {
     $query = "SELECT * FROM $componet";
 }
 

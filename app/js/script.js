@@ -116,15 +116,25 @@ document.addEventListener('DOMContentLoaded', function (e) {
     // Show modal window
     function showModal(e) {
         document.querySelector('body').classList.add('modal-open'); // prevent scroll body
-        document.querySelector('.modal').classList.add('modal_show');
         document.querySelector('.modal__head').innerHTML = e.firstElementChild.dataset.configItemTitle;
+        document.querySelector('.modal').classList.add('modal_show');
+
+        setTimeout(function(){
+            document.querySelector('.modal').classList.add('modal_fadein');
+            document.querySelector('.modal__content').classList.add('modal__content_rollout');
+        }, 300)
     }
 
     // Hide modal window
     function hideModal() {
+        document.querySelector('.modal__content').classList.remove('modal__content_rollout');
+
+        setTimeout(function(){
+        document.querySelector('.modal').classList.remove('modal_fadein');
         document.querySelector('.modal').classList.remove('modal_show');
         document.querySelector('body').classList.remove('modal-open'); // allow scroll body
         document.querySelector('.components tbody').innerHTML = ""; // clean content inside when closing
+        }, 400)
     }
 
     // Chose Component
@@ -235,12 +245,11 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
         if (curComponent !== 'base' && swichState) {
             if(currentConfig['base'][0] == undefined){
-                alert("platform first");
+                alert("В режиме совместимости сначала выберите платформу.");
                 return;
             }
             var filter = currentConfig['base'][0][curComponent]; // get condition for MYSQL WHERE clause
-            var url = url + '&filter=' + '"' + filter + '"';
-            // если база еще не выбрана то на рендер только строка с предупреждением
+            var url = url + '&filter=' + filter;
 
             xhrequest(url, curNode, curComponent);
         } else {
