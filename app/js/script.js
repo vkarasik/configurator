@@ -44,11 +44,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
     })
 
     document.querySelector('.result').addEventListener('click', function (e) {
-        // set on plus and minus icons for config quantitty
+        // set on plus and minus icons for result config quantitty
         if (e.target.classList.contains('result__item-quantity-button')) {
             changeConfigQuantity(e);
         }
     })
+
+    document.querySelector('.button_sent').addEventListener('click', showModal);
 
     document.querySelectorAll('.modal__close').forEach(function (i) {
         i.addEventListener('click', hideModal);
@@ -59,6 +61,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
             choseComponent(e.target);
         }
     })
+
+    // set on copy button
     document.querySelector('.button_copy').addEventListener('click', copyConfig)
 
     // Copy to clipboard
@@ -113,27 +117,27 @@ document.addEventListener('DOMContentLoaded', function (e) {
         }
     }
 
-    // Show modal window
+    // Show modal content window
     function showModal(e) {
         document.querySelector('body').classList.add('modal-open'); // prevent scroll body
-        document.querySelector('.modal__head').innerHTML = e.firstElementChild.dataset.configItemTitle;
-        document.querySelector('.modal').classList.add('modal_show');
+        document.querySelector('.modal_content .modal__head').innerHTML = e.firstElementChild.dataset.configItemTitle;
+        document.querySelector('.modal_content').classList.add('modal_show');
 
-        setTimeout(function(){
-            document.querySelector('.modal').classList.add('modal_fadein');
-            document.querySelector('.modal__content').classList.add('modal__content_rollout');
-        }, 300)
+        setTimeout(function () {
+            document.querySelector('.modal_content').classList.add('modal_fadein');
+            document.querySelector('.modal__inner_content').classList.add('modal__inner_content-rollout');
+        }, 250)
     }
 
     // Hide modal window
-    function hideModal() {
-        document.querySelector('.modal__content').classList.remove('modal__content_rollout');
+    function hideModal(e) {
+        document.querySelector('.modal__inner_content').classList.remove('modal__inner_content-rollout');
+        document.querySelector('.modal_content').classList.remove('modal_fadein');
 
-        setTimeout(function(){
-        document.querySelector('.modal').classList.remove('modal_fadein');
-        document.querySelector('.modal').classList.remove('modal_show');
-        document.querySelector('body').classList.remove('modal-open'); // allow scroll body
-        document.querySelector('.components tbody').innerHTML = ""; // clean content inside when closing
+        setTimeout(function () {
+            document.querySelector('.modal_content').classList.remove('modal_show');
+            document.querySelector('body').classList.remove('modal-open'); // allow scroll body
+            document.querySelector('.components tbody').innerHTML = ""; // clean content inside when closing
         }, 400)
     }
 
@@ -244,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         var url = 'get-component.php?cmpt=' + curComponent;
 
         if (curComponent !== 'base' && swichState) {
-            if(currentConfig['base'][0] == undefined){
+            if (currentConfig['base'][0] == undefined) {
                 alert("В режиме совместимости сначала выберите платформу.");
                 return;
             }
