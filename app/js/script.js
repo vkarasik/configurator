@@ -120,17 +120,30 @@ document.addEventListener('DOMContentLoaded', function (e) {
     // Show modal content window
     function showModal(e) {
         document.querySelector('body').classList.add('modal-open'); // prevent scroll body
-        document.querySelector('.modal_content .modal__head').innerHTML = e.firstElementChild.dataset.configItemTitle;
-        document.querySelector('.modal_content').classList.add('modal_show');
+
+        var target = '.modal_form';
+        
+        if(e.currentTarget == undefined){
+            document.querySelector('.modal_content .modal__head').innerHTML = e.firstElementChild.dataset.configItemTitle;
+            target = '.modal_content';
+        }
+        
+        document.querySelector(target).classList.add('modal_show');
 
         setTimeout(function () {
-            document.querySelector('.modal_content').classList.add('modal_fadein');
-            document.querySelector('.modal__inner_content').classList.add('modal__inner_content-rollout');
+            document.querySelector(target).classList.add('modal_fadein');
+            document.querySelector(target).firstElementChild.classList.add('modal__inner_rollout');
         }, 250)
     }
 
     // Hide modal window
     function hideModal(e) {
+        var target = e.target.parentElement;
+
+        if(target.classList.contains('modal__inner_form')){ 
+            target = '.modal__inner_form';
+        }
+
         document.querySelector('.modal__inner_content').classList.remove('modal__inner_content-rollout');
         document.querySelector('.modal_content').classList.remove('modal_fadein');
 
