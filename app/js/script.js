@@ -138,20 +138,23 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
     // Hide modal window
     function hideModal(e) {
-        var target = e.target.parentElement;
 
-        if(target.classList.contains('modal__inner_form')){ 
-            target = '.modal__inner_form';
+        var target = '.modal_form';
+
+        if(e == undefined || e.currentTarget.parentElement.classList.contains('modal__inner_content')){
+            var target = '.modal_content';
         }
 
-        document.querySelector('.modal__inner_content').classList.remove('modal__inner_content-rollout');
-        document.querySelector('.modal_content').classList.remove('modal_fadein');
+        document.querySelector(target).firstElementChild.classList.remove('modal__inner_rollout');
+        document.querySelector(target).classList.remove('modal_fadein');
 
         setTimeout(function () {
-            document.querySelector('.modal_content').classList.remove('modal_show');
+            document.querySelector(target).classList.remove('modal_show');
             document.querySelector('body').classList.remove('modal-open'); // allow scroll body
-            document.querySelector('.components tbody').innerHTML = ""; // clean content inside when closing
-        }, 400)
+            if(target = '.modal_content'){
+                document.querySelector('.components tbody').innerHTML = ""; // clean content inside when closing
+            }
+        }, 250)
     }
 
     // Chose Component
@@ -363,18 +366,16 @@ document.addEventListener('DOMContentLoaded', function (e) {
         showModal(curNode);
     }
 
-    // Get components list from DB
-    // function getData(component) { //component = e
-    //     var curComponent = component.currentTarget.parentElement.id;
+    document.querySelector('.test').addEventListener('click', sendConfig);
 
-    //     var requestPrice = new XMLHttpRequest();
-    //     requestPrice.open('GET', 'get-component.php?cmpt=' + curComponent);
-    //     requestPrice.onload = function () {
-    //         var data = JSON.parse(this.response);
-    //         var curComponentList = data;
-    //         selectionData(curComponentList, curComponent);
-    //     }
-    //     requestPrice.send();
-    // }
+    function sendConfig(){
+        var request = new XMLHttpRequest();
+        request.open('POST', 'mail.php', true);
+        request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        request.onload = function () {
+            data = this.response;
+        }
+        request.send('name=' + resultConfig.config);
+    }
 
 })
