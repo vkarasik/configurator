@@ -4,12 +4,12 @@
         <h2 class="modal__head">Отправить менеджеру</h2>
         <p class="modal__text">Чтобы получить счет, уточнить срок поставки и&nbsp;возможность скидки, отправьте запрос
             менеджеру</p>
-        <form>
-            <input type="text" placeholder="Наименование компании*">
-            <input type="text" placeholder="Email*">
-            <input type="text" placeholder="Комментарий">
-            <button class="button button_sent"><img src="img/icon_plane.svg" alt=""><span>Отправить</span></button>
+        <form type="POST">
+            <input type="text" name="company" placeholder="Наименование компании*" required>
+            <input type="email" name="email" placeholder="Email*" required>
+            <textarea name="comment" placeholder="Комментарий"></textarea>
+            <div class="modal__message"></div>
+            <button class="button button_send" type="submit"><img src="img/icon_plane.svg" alt=""><span>Отправить</span></button>
         </form>
-        <button class="test">2323</button>
     </div>
 </div>

@@ -50,7 +50,11 @@ document.addEventListener('DOMContentLoaded', function (e) {
         }
     })
 
-    document.querySelector('.button_sent').addEventListener('click', showModal);
+    document.querySelector('.button_open-popup').addEventListener('click', showModal);
+    // document.querySelector('.button_send').addEventListener('click', sendConfig);
+    document.querySelector('.button_send').addEventListener('click', sendConfig);
+
+    document.querySelector('textarea').addEventListener('input', autoGrow);
 
     document.querySelectorAll('.modal__close').forEach(function (i) {
         i.addEventListener('click', hideModal);
@@ -122,12 +126,12 @@ document.addEventListener('DOMContentLoaded', function (e) {
         document.querySelector('body').classList.add('modal-open'); // prevent scroll body
 
         var target = '.modal_form';
-        
-        if(e.currentTarget == undefined){
+
+        if (e.currentTarget == undefined) {
             document.querySelector('.modal_content .modal__head').innerHTML = e.firstElementChild.dataset.configItemTitle;
             target = '.modal_content';
         }
-        
+
         document.querySelector(target).classList.add('modal_show');
 
         setTimeout(function () {
@@ -141,8 +145,12 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
         var target = '.modal_form';
 
-        if(e == undefined || e.currentTarget.parentElement.classList.contains('modal__inner_content')){
-            var target = '.modal_content';
+        if (e == undefined) {
+            target = '.modal_content';
+        } else if (e === 'modal_form') {
+            target = '.modal_form';
+        } else if (e.currentTarget.parentElement.classList.contains('modal__inner_content')) {
+            target = '.modal_content';
         }
 
         document.querySelector(target).firstElementChild.classList.remove('modal__inner_rollout');
@@ -151,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         setTimeout(function () {
             document.querySelector(target).classList.remove('modal_show');
             document.querySelector('body').classList.remove('modal-open'); // allow scroll body
-            if(target = '.modal_content'){
+            if (target = '.modal_content') {
                 document.querySelector('.components tbody').innerHTML = ""; // clean content inside when closing
             }
         }, 250)
@@ -366,16 +374,55 @@ document.addEventListener('DOMContentLoaded', function (e) {
         showModal(curNode);
     }
 
-    document.querySelector('.test').addEventListener('click', sendConfig);
+    function sendConfig(e) {
+        e.preventDefault();
 
-    function sendConfig(){
+        var formData = {
+            company: document.querySelector('[name="company"]').value,
+            email: document.querySelector('[name="email"]').value,
+            comment: document.querySelector('[name="comment"]').value,
+            config: document.querySelector('.result__item-description').textContent,
+            message: document.querySelector('.modal__message'),
+            quantity: resultConfig.quantity,
+            price: resultConfig.price,
+            term: Math.max.apply(Math, resultConfig.term),
+        }
+
+        var requestData = '';
+
+        for (key in formData) {
+            requestData += '&' + key + '=' + formData[key];
+        }
+
         var request = new XMLHttpRequest();
         request.open('POST', 'mail.php', true);
         request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         request.onload = function () {
-            data = this.response;
+            data = JSON.parse(this.response);
+
+            if (data.status === 'succsess') {
+                formData.message.classList.add('modal__message_success');
+                formData.message.innerHTML = data.message;
+
+                setTimeout(function () {
+                    formData.message.classList.remove('modal__message_success');
+                    hideModal('modal_form');
+                }, 1500)
+            } else {
+                formData.message.classList.add('modal__message_error');
+                formData.message.innerHTML = data.message;
+
+                setTimeout(function () {
+                    formData.message.classList.remove('modal__message_error');
+                }, 2000)
+            }
         }
-        request.send('name=' + resultConfig.config);
+        request.send(requestData);
+    }
+
+    function autoGrow(e) {
+        element = e.target;
+        element.style.height = (element.scrollHeight) + "px";
     }
 
 })
