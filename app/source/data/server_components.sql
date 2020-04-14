@@ -1,3 +1,30 @@
+CREATE TABLE `orders` (
+  `order_id` int(11) NOT NULL AUTO_INCREMENT,
+  `config` varchar(256) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  `term` int(11) NOT NULL,
+  `company` varchar(256) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `comment` varchar(1024) DEFAULT NULL,
+  PRIMARY KEY (`order_id`)
+)
+
+CREATE TABLE `server_components`.`orders` (
+  `order_id` INT NOT NULL AUTO_INCREMENT,
+  `config` VARCHAR(256) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NOT NULL,
+  `company` VARCHAR(256) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NOT NULL,
+  `email` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NOT NULL,
+  `comment` VARCHAR(1024),
+  `qu` VARCHAR(45) NOT NULL,
+  `hdd` VARCHAR(45) NOT NULL,
+  `ssd` VARCHAR(45) NOT NULL,
+  `options` VARCHAR(45) NOT NULL,
+  `price` DECIMAL(6,1) NOT NULL,
+  `term` INT NOT NULL,
+  `link` VARCHAR(256) NULL,
+  PRIMARY KEY (`base_id`));
+
 -- Create Base table
 
 CREATE TABLE `server_components`.`base` (

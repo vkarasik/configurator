@@ -8,8 +8,9 @@ $id = $_GET['id'];
 
 // Create Query
 if (isset($id)) {
-    $id = $componet . "_id";
-    $query = "SELECT * FROM $componet WHERE $id = $id";
+    $column = $componet . "_id";
+    $query = "SELECT * FROM $componet WHERE $column = $id";
+    // var_dump ($query);
 } elseif (isset($filter)) {
     $filter = explode('/', $filter); // turn into arr
     $filter = ('"' . implode('", "', array_map(strval, $filter)) . '"'); // turn into string with comma

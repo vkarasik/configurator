@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
     })
 
     document.querySelector('.button_open-popup').addEventListener('click', showModal);
-    // document.querySelector('.button_send').addEventListener('click', sendConfig);
     document.querySelector('.button_send').addEventListener('click', sendConfig);
 
     document.querySelector('textarea').addEventListener('input', autoGrow);
@@ -319,8 +318,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
         return data[0];
     }
 
-
-
     // Rendering table
     function renderTable(curComponentList, curNode, curComponent) {
 
@@ -378,18 +375,23 @@ document.addEventListener('DOMContentLoaded', function (e) {
         e.preventDefault();
 
         var formData = {
+            // Form data
             company: document.querySelector('[name="company"]').value,
             email: document.querySelector('[name="email"]').value,
             comment: document.querySelector('[name="comment"]').value,
+
+            // Config data
             config: document.querySelector('.result__item-description').textContent,
+            quantity: resultConfig.quantity ? resultConfig.quantity : 0,
+            price: resultConfig.price ? resultConfig.price : 0,
+            term: resultConfig.term ? Math.max.apply(Math, resultConfig.term) : 0,
+
+            // Message for response
             message: document.querySelector('.modal__message'),
-            quantity: resultConfig.quantity,
-            price: resultConfig.price,
-            term: Math.max.apply(Math, resultConfig.term),
         }
 
+        // Create body for POST request
         var requestData = '';
-
         for (key in formData) {
             requestData += '&' + key + '=' + formData[key];
         }

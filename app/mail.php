@@ -14,6 +14,9 @@ if (!empty($_POST)) {
         $message = 'Заполните корректно все поля.';
         $status = 'error';
     }else{
+
+        require 'add-config.php'; // add config into db
+
         $to = 'v.karasik@cd-life.by';
         // $subject = 'Сборка сервера №' . $data->num;
         $message = "Компания: " . $data->company . "<br>" . "Конфигурация: " . $data->config . "<br>" . "Цена: " . $data->price . " USD без НДС" . "<br>" . "Количество: " . $data->quantity . " шт" . "<br>" . "Срок поставки: " . $data->term . " дн" . "<br>" . "Комментарий: " . $data->comment;
