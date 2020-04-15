@@ -25,15 +25,15 @@
     <div class="container">
         <h1>Редактор прайса</h1>
         <select name="components" id="components">
-            <option>Компоненты</option>
+            <option value="">Все компоненты</option>
             <option value="base">Платформы</option>
             <option value="cpu">Процессоры</option>
             <option value="ram">Оперативная память</option>
             <option value="hdd">HDD диски</option>
             <option value="ssd">SSD диски</option>
-            <option value="option">Опции</option>
+            <option value="options">Опции</option>
         </select>
-        <button class="button button_get">Редактировать</button>
+        <!-- <button class="button button_get">Редактировать</button> -->
         <table class="components">
             <thead>
                 <tr>
@@ -43,45 +43,9 @@
                     <td>Изменить</td>
                 </tr>
             </thead>
-            <tbody>
-                <!-- <tr class="components__category">
-                    <td colspan="4">Стоечные двухпроцессорные платформы 19”</td>
-                </tr>
-                <tr class="components__item" data-component-name="ASUS RS100-E9-PI2">
-                    <td class="components__item-desc">RS100-E9-PI2 (1U, 1xLGA1151, 4xDDR4 ECC, 2x3,5"/4x2,5" SATA, 2xM,2, Intel SW Raid 0/1/5/10,
-                        DVD-RW, VGA, 2xGbE, 250W Bronze, 380mm dpt)</td>
-                    <td class="components__item-price">1&nbsp;500&nbsp;$</td>
-                    <td class="components__item-term">21&nbsp;дн.</td>
-                    <td class="components__item-select" title="Выбор компонента"><img src="img/icon_add-blue.svg"
-                            alt="Выбор компонента" title="Выбор компонента"></td>
-                </tr> -->
-            </tbody>
+            <tbody></tbody>
         </table>
-    <?php
 
-require 'config/db.php';
-
-$query = "SELECT * FROM cpu";
-
-
-
-// Get Result
-$result = mysqli_query($conn, $query);
-
-// Fetch Data
-$components = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-// Data Array
-$data = [];
-
-// Loop through $components and add to $data array
-foreach ($components as $key => $value) {
-    $data[] = $value;
-}
-
-// Return JSON from $data array
-echo json_encode($data, JSON_NUMERIC_CHECK);
-?>
     </div>
 
 </body>

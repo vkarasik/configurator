@@ -351,8 +351,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
             row.dataset.componentid = componentId;
 
             var tdName = '<td class="components__item-desc">' + componentDescription + '</td>';
-            var tdPrice = '<td class="components__item-price">' + componentPrice + '&nbsp;$</td>';
-            var tdTerm = '<td class="components__item-term">' + componentTerm + '&nbsp;дн.</td>';
+            var tdPrice = '<td class="components__item-price">' + componentPrice + '</td>';
+            var tdTerm = '<td class="components__item-term">' + componentTerm + '</td>';
             var tdSelect = '<td class="components__item-select" title="Выбор компонента"><img class="components__item-select-icon" src="img/icon_add-blue.svg" title="Выбор компонента"></td>';
 
             row.innerHTML = tdName + tdPrice + tdTerm + tdSelect;

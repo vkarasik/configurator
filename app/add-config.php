@@ -7,3 +7,5 @@ $query = "INSERT INTO orders VALUES (DEFAULT, '$data->config', $data->quantity, 
 
 // Add
 mysqli_query($conn, $query);
+
+mysqli_close($conn);
