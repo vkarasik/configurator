@@ -25,7 +25,7 @@
     <div class="container">
         <h1>Редактор прайса</h1>
         <select name="components" id="components">
-            <option value="">Все компоненты</option>
+            <option value="">Выбрать категорию</option>
             <option value="base">Платформы</option>
             <option value="cpu">Процессоры</option>
             <option value="ram">Оперативная память</option>
@@ -45,9 +45,7 @@
             </thead>
             <tbody></tbody>
         </table>
-
     </div>
-
 </body>
 
 </html>

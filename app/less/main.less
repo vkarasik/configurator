@@ -38,8 +38,18 @@ project: Server Configurator
     display: none;
 }
 
-.text-a-c{
+.text-a-c {
     text-align: center;
+}
+
+.highlight {
+    &_success {
+        background: lighten(@color-green, 30%);
+    }
+
+    &_error {
+        background: lighten(@color-red, 30%);
+    }
 }
 
 //Extra small devices Phones (<768px)	

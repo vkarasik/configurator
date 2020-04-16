@@ -13,10 +13,21 @@ $query = "UPDATE $componet SET price = $price, term = $term WHERE $column = $id"
 // Get Result
 
 if (mysqli_query($conn, $query)) {
-    echo "Record updated successfully";
+
+    echo json_encode(
+        array(
+            'status' => 'success',
+            'message' => 'Сохранено успешно'
+        )
+    );
 } else {
-    echo "Error updating record: " . mysqli_error($conn);
+
+    echo json_encode(
+        array(
+            'status' => 'error',
+            'message' => "Ошибка: " . mysqli_error($conn)
+        )
+    );
 }
 
 mysqli_close($conn);
-

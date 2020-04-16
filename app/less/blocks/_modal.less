@@ -137,18 +137,18 @@
         font-weight: 400;
         text-align: left;
 
-        &_error{
+        &_error {
             display: block;
             border: 1px solid @color-red;
-            background: @color-red + 95;
+            background: lighten(@color-red, 30%);
             color: @color-red;
         }
 
-        &_success{
+        &_success {
             display: block;
             border: 1px solid @color-green;
-            background: @color-green + 95;
-            color: @color-green;
+            background: lighten(@color-green, 30%);
+            color: darken(@color-green, 10%);
         }
     }
 }
