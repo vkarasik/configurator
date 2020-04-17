@@ -24,6 +24,10 @@
         background-image: url('../img/icon_plane.svg');
     }
 
+    &_login {
+        background-image: url('../../img/icon_login.svg');
+    }
+
     &:hover {
         background-color: @color-blue - 10;
     }
@@ -32,5 +36,50 @@
         // text-align: right;
         display: flex;
         justify-content: space-between;
+    }
+}
+
+form {
+    width: 100%;
+
+    &.auth {
+        width: 300px;
+        margin: 30px auto;
+        text-align: center;
+    }
+
+    input {
+        display: block;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid @color-gray-middle;
+        border-radius: 3px;
+        margin-bottom: 12px;
+        font-family: 'Open Sans';
+        font-size: 140%;
+        font-weight: 400;
+        color: @color-gray-deep;
+    }
+
+    textarea {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+        min-height: 80px;
+        box-sizing: border-box;
+        padding: 10px;
+        border-radius: 3px;
+        margin-bottom: 12px;
+        font-family: 'Open Sans';
+        font-size: 140%;
+        font-weight: 400;
+        color: @color-gray-deep;
+        resize: none;
+        overflow: hidden;
+    }
+
+    .sent {
+        margin-top: 15px;
     }
 }

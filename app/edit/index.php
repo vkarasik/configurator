@@ -1,3 +1,10 @@
+<?php
+session_start();
+if ($_SESSION['admin'] != "admin") {
+    header("Location: login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,8 +24,8 @@
     <meta name="theme-color" content="#ffffff">
     <title>Редактор прайса</title>
     <meta name="description" content="" />
-    <link rel="stylesheet" href="css/main.min.css">
-    <script src="js/edit.js"></script>
+    <link rel="stylesheet" href="../css/main.min.css">
+    <script src="../js/edit.js"></script>
 </head>
 
 <body>
@@ -33,7 +40,6 @@
             <option value="ssd">SSD диски</option>
             <option value="options">Опции</option>
         </select>
-        <!-- <button class="button button_get">Редактировать</button> -->
         <table class="components">
             <thead>
                 <tr>
