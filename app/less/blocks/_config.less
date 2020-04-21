@@ -14,17 +14,20 @@
         font-size: 160%;
 
         &-type {
-            width: 50%;
+            width: 45%;
             padding-left: 52px;
             box-sizing: border-box;
         }
 
         &-quantity,
         &-price,
-        &-term,
-        &-inner {
-            width: 12.5%;
+        &-term {
+            width: 16.6%;
             text-align: center;
+        }
+
+        &-inner {
+            width: 5%;
         }
     }
 
@@ -40,7 +43,7 @@
         color: @color-gray-deep;
 
         &-type {
-            width: 50%;
+            width: 45%;
 
             &-name {
                 display: inline-block;
@@ -57,10 +60,13 @@
 
         &-quantity,
         &-price,
-        &-term,
-        &-inner {
-            width: 12.5%;
+        &-term {
+            width: 16.6%;
             text-align: center;
+        }
+
+        &-inner {
+            width: 5%;
         }
 
         &-quantity {
@@ -74,19 +80,24 @@
                 color: @color-gray-deep;
             }
 
-            &-number{
+            &-number {
                 display: inline-block;
                 padding: 0 10px;
             }
 
-            &-button{
+            &-button {
                 display: inline-block;
                 width: 10px;
                 height: 10px;
                 cursor: pointer;
 
-                &_minus{background: url('../img/icon_minus_10x10.svg') center center no-repeat;}
-                &_plus{background: url('../img/icon_plus_10x10.svg') center center no-repeat;}
+                &_minus {
+                    background: url('../img/icon_minus_10x10.svg') center center no-repeat;
+                }
+
+                &_plus {
+                    background: url('../img/icon_plus_10x10.svg') center center no-repeat;
+                }
             }
         }
 

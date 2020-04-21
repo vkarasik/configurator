@@ -46,6 +46,10 @@ document.addEventListener('DOMContentLoaded', function (e) {
     if (e.target.classList.contains('result__item-quantity-button')) {
       changeConfigQuantity(e);
     }
+    // set on clear config button
+    else if (e.target.classList.contains('config__item-icon_clear')) {
+      clearConfig();
+    }
   });
 
   document.querySelector('.button_open-popup').addEventListener('click', showModal);
@@ -58,13 +62,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
     i.addEventListener('click', hideModal);
   });
 
-  // Close modal when Esc
-  document.addEventListener('keydown', function (e) {
-    if (e.keyCode === 27) {
-      hideModal();
-    }
-  });
-
   document.querySelector('.components').addEventListener('click', function (e) {
     if (e.target.className === 'components__item-select-icon') {
       choseComponent(e.target);
@@ -73,6 +70,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
   // set on copy button
   document.querySelector('.button_copy').addEventListener('click', copyConfig);
+
+  // Close modal when Esc
+  document.addEventListener('keydown', function (e) {
+    if (e.keyCode === 27) {
+      hideModal();
+    }
+  });
 
   // Copy to clipboard
   function copyConfig(e) {
@@ -97,6 +101,15 @@ document.addEventListener('DOMContentLoaded', function (e) {
     }, 1000);
   }
 
+  // Clear Config
+  function clearConfig() {
+    for (item in currentConfig) {
+      currentConfig[item].length = 0;
+      var node = document.getElementById(item);
+      clearItem(node);
+    }
+  }
+
   // Change Item Quantity
   function changeItemQuantity(e) {
     var item = e.target.parentElement.parentElement.dataset.configItemType;
@@ -114,6 +127,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
   function changeConfigQuantity(e) {
     var resultQuantity = document.querySelector('.result__item-quantity-number');
     var resultPrice = document.querySelector('.result__item-price');
+
+    if (resultQuantity.innerHTML === '0') return;
 
     if (e.target.classList.contains('result__item-quantity-button_plus')) {
       ++resultConfig.quantity; // increment result quantity

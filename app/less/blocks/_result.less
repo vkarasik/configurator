@@ -2,11 +2,11 @@
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid @color-gray-middle;
-    padding-bottom: 15px;
+    padding: 15px;
     margin-bottom: 25px;
 
     &__item {
-        width: 18.3%;
+        width: 16.6%;
         text-align: center;
 
         &-head {
@@ -37,6 +37,17 @@
         &_config {
             width: 45%;
             text-align: left;
+        }
+
+        &_clear {
+            width: 5% !important;
+            text-align: right;
+
+            .config__item-icon_clear {
+                position: relative;
+                top: 52px;
+
+            }
         }
 
         &-quantity {
