@@ -28,8 +28,19 @@
         background-image: url('../../img/icon_login.svg');
     }
 
+    &_add {
+        background-image: url('../../img/icon_add-linear-white.svg');
+        background-color: @color-green;
+
+        &:hover {
+            background-color: darken(@color-green, 5%) !important;
+        }
+
+    }
+
+
     &:hover {
-        background-color: @color-blue - 10;
+        background-color: darken(@color-blue, 5%);
     }
 
     &-inner {
@@ -47,6 +58,8 @@ form {
         margin: 30px auto;
         text-align: center;
     }
+
+    &.add-cmpt {}
 
     input {
         display: block;
