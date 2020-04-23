@@ -61,10 +61,10 @@ if ($_SESSION['admin'] != "admin") {
         <div class="modal__close"></div>
         <h2 class="modal__head">Добавить компонент</h2>
         <p class="modal__text">Для добавления компонента заполните все поля</p>
-        <form type="POST" class="add-cmpt">
+        <form method="POST" class="add-cmpt" id="add-cmpt">
             <div class="add-cmpt__inner"></div>
             <div class="modal__message"></div>
-            <button class="button button_add button_send" type="submit">Добавить</button>
+            <button class="button button_insert" type="submit">Добавить</button>
         </form>
     </div>
 </div>

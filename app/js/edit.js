@@ -1,10 +1,26 @@
 document.addEventListener('DOMContentLoaded', function (e) {
   document.querySelector('.button_add').addEventListener('click', getFields);
+  document.querySelector('.button_insert').addEventListener('click', insertItem);
   document.getElementById('components').addEventListener('change', xhrequest);
 
   document.querySelectorAll('.modal__close').forEach(function (i) {
     i.addEventListener('click', hideModal);
   });
+
+  function insertItem(e) {
+    e.preventDefault();
+    var formData = new FormData(e.target.parentElement);
+    var currentComponent = document.getElementById('components').value;
+    formData.set('cmpt', currentComponent);
+    var url = 'add-component.php';
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', url, true);
+    xhr.onload = function () {
+      var data = JSON.parse(this.response);
+    };
+    xhr.send(formData);
+  }
 
   function getFields() {
     var currentComponent = document.getElementById('components').value;
