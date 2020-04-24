@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     e.preventDefault();
     var formData = new FormData(e.target.parentElement);
     var currentComponent = document.getElementById('components').value;
+    var message = document.querySelector('.modal__message');
     formData.set('cmpt', currentComponent);
     var url = 'add-component.php';
 
@@ -18,6 +19,23 @@ document.addEventListener('DOMContentLoaded', function (e) {
     xhr.open('POST', url, true);
     xhr.onload = function () {
       var data = JSON.parse(this.response);
+
+      if (data.status === 'success') {
+        message.classList.add('modal__message_success');
+        message.innerHTML = data.message;
+
+        setTimeout(function () {
+          message.classList.remove('modal__message_success');
+          hideModal('modal_form');
+        }, 1500);
+      } else {
+        message.classList.add('modal__message_error');
+        message.innerHTML = data.message;
+
+        setTimeout(function () {
+          message.classList.remove('modal__message_error');
+        }, 2000);
+      }
     };
     xhr.send(formData);
   }

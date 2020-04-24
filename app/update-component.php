@@ -17,7 +17,7 @@ if (mysqli_query($conn, $query)) {
     echo json_encode(
         array(
             'status' => 'success',
-            'message' => 'Сохранено успешно'
+            'message' => 'Сохранено успешно',
         )
     );
 } else {
@@ -25,7 +25,7 @@ if (mysqli_query($conn, $query)) {
     echo json_encode(
         array(
             'status' => 'error',
-            'message' => "Ошибка: " . mysqli_error($conn)
+            'message' => "Ошибка: " . mysqli_error($conn),
         )
     );
 }

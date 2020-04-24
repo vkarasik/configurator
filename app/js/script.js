@@ -426,7 +426,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     request.onload = function () {
       data = JSON.parse(this.response);
 
-      if (data.status === 'succsess') {
+      if (data.status === 'success') {
         formData.message.classList.add('modal__message_success');
         formData.message.innerHTML = data.message;
 

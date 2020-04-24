@@ -4,7 +4,7 @@ if (isset($_POST['username'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    if ($username == 'admin' && $password == '123') {
+    if ($username == 'admin' && md5($password) == 'b5483b774218e7d9a182dc926a56693f') {
         $_SESSION['admin'] = $username;
         header("Location: index.php");
         exit;
@@ -41,7 +41,7 @@ if (isset($_POST['username'])) {
             <h1>Авторизация</h1>
             <form class="auth" method="POST">
                 <input type="text" name="username" placeholder="Login">
-                <input type="text" name="password" placeholder="Pass">
+                <input type="password" name="password" placeholder="Pass">
                 <div><?php echo ($error); ?></div>
                 <button class="button button_login" type="submit">Login</button>
             </form>

@@ -9,13 +9,13 @@ $query = "DESC $componet";
 $result = mysqli_query($conn, $query);
 
 // Fetch Data
-$components = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$fields = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 // Data Array
 $data = [];
 
-// Loop through $components and add to $data array
-foreach ($components as $key => $value) {
+// Loop through $fields and add to $data array
+foreach ($fields as $key => $value) {
     $data[] = $value;
 }
 
