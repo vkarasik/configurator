@@ -30,4 +30,5 @@ if (mysqli_query($conn, $query)) {
     );
 }
 
+// Close
 mysqli_close($conn);

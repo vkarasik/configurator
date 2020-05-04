@@ -3,20 +3,18 @@ require '../config/db.php';
 
 $componet = $_GET['cmpt'];
 
+// Get Columns
 $query = "DESC $componet";
 
 // Get Result
 $result = mysqli_query($conn, $query);
 
-// Fetch Data
-$fields = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
 // Data Array
-$data = [];
+$data = array();
 
-// Loop through $fields and add to $data array
-foreach ($fields as $key => $value) {
-    $data[] = $value;
+// Loop through and add to $data array
+while (($row = mysqli_fetch_assoc($result))) {
+    array_push($data, $row);
 }
 
 // Return JSON from $data array

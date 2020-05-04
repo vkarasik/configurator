@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
--- Хост: 127.0.0.1:3306
--- Время создания: Мар 03 2020 г., 16:53
--- Версия сервера: 10.3.13-MariaDB
--- Версия PHP: 7.1.22
+-- Host: 127.0.0.1:3306
+-- Generation Time: May 04, 2020 at 11:51 AM
+-- Server version: 5.5.53
+-- PHP Version: 5.6.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -19,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `server_components`
+-- Database: `server_components`
 --
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `base`
+-- Table structure for table `base`
 --
 
 CREATE TABLE `base` (
@@ -44,7 +42,7 @@ CREATE TABLE `base` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `base`
+-- Dumping data for table `base`
 --
 
 INSERT INTO `base` (`base_id`, `name`, `description`, `subcategory`, `cpu`, `ram`, `hdd`, `ssd`, `options`, `price`, `term`, `link`) VALUES
@@ -81,7 +79,7 @@ INSERT INTO `base` (`base_id`, `name`, `description`, `subcategory`, `cpu`, `ram
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `cpu`
+-- Table structure for table `cpu`
 --
 
 CREATE TABLE `cpu` (
@@ -96,7 +94,7 @@ CREATE TABLE `cpu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `cpu`
+-- Dumping data for table `cpu`
 --
 
 INSERT INTO `cpu` (`cpu_id`, `name`, `description`, `subcategory`, `type`, `price`, `term`, `link`) VALUES
@@ -131,7 +129,7 @@ INSERT INTO `cpu` (`cpu_id`, `name`, `description`, `subcategory`, `type`, `pric
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `hdd`
+-- Table structure for table `hdd`
 --
 
 CREATE TABLE `hdd` (
@@ -146,7 +144,7 @@ CREATE TABLE `hdd` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `hdd`
+-- Dumping data for table `hdd`
 --
 
 INSERT INTO `hdd` (`hdd_id`, `name`, `description`, `subcategory`, `type`, `price`, `term`, `link`) VALUES
@@ -176,7 +174,7 @@ INSERT INTO `hdd` (`hdd_id`, `name`, `description`, `subcategory`, `type`, `pric
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `options`
+-- Table structure for table `options`
 --
 
 CREATE TABLE `options` (
@@ -191,7 +189,7 @@ CREATE TABLE `options` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `options`
+-- Dumping data for table `options`
 --
 
 INSERT INTO `options` (`options_id`, `name`, `description`, `subcategory`, `type`, `price`, `term`, `link`) VALUES
@@ -211,7 +209,24 @@ INSERT INTO `options` (`options_id`, `name`, `description`, `subcategory`, `type
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `ram`
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `order_id` int(11) NOT NULL,
+  `config` varchar(256) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  `term` int(11) NOT NULL,
+  `company` varchar(256) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `comment` varchar(1024) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ram`
 --
 
 CREATE TABLE `ram` (
@@ -226,7 +241,7 @@ CREATE TABLE `ram` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `ram`
+-- Dumping data for table `ram`
 --
 
 INSERT INTO `ram` (`ram_id`, `name`, `description`, `subcategory`, `type`, `price`, `term`, `link`) VALUES
@@ -239,7 +254,7 @@ INSERT INTO `ram` (`ram_id`, `name`, `description`, `subcategory`, `type`, `pric
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `ssd`
+-- Table structure for table `ssd`
 --
 
 CREATE TABLE `ssd` (
@@ -254,7 +269,7 @@ CREATE TABLE `ssd` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `ssd`
+-- Dumping data for table `ssd`
 --
 
 INSERT INTO `ssd` (`ssd_id`, `name`, `description`, `subcategory`, `type`, `price`, `term`, `link`) VALUES
@@ -268,86 +283,90 @@ INSERT INTO `ssd` (`ssd_id`, `name`, `description`, `subcategory`, `type`, `pric
 (8, 'Intel SSD DC P3100 128GB', '128GB, M.2 80mm, PCIe, 3.0 x4, 3D1, TLC', 'Серверные SSD диски', 'M.2', '90.0', 7, 'https://ark.intel.com/content/www/us/en/ark/products/97071/intel-ssd-dc-p3100-series-128gb-m-2-80mm-pcie-3-0-x4-3d1-tlc.html');
 
 --
--- Индексы сохранённых таблиц
+-- Indexes for dumped tables
 --
 
 --
--- Индексы таблицы `base`
+-- Indexes for table `base`
 --
 ALTER TABLE `base`
   ADD PRIMARY KEY (`base_id`);
 
 --
--- Индексы таблицы `cpu`
+-- Indexes for table `cpu`
 --
 ALTER TABLE `cpu`
   ADD PRIMARY KEY (`cpu_id`);
 
 --
--- Индексы таблицы `hdd`
+-- Indexes for table `hdd`
 --
 ALTER TABLE `hdd`
   ADD PRIMARY KEY (`hdd_id`);
 
 --
--- Индексы таблицы `options`
+-- Indexes for table `options`
 --
 ALTER TABLE `options`
   ADD PRIMARY KEY (`options_id`);
 
 --
--- Индексы таблицы `ram`
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`order_id`);
+
+--
+-- Indexes for table `ram`
 --
 ALTER TABLE `ram`
   ADD PRIMARY KEY (`ram_id`);
 
 --
--- Индексы таблицы `ssd`
+-- Indexes for table `ssd`
 --
 ALTER TABLE `ssd`
   ADD PRIMARY KEY (`ssd_id`);
 
 --
--- AUTO_INCREMENT для сохранённых таблиц
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT для таблицы `base`
+-- AUTO_INCREMENT for table `base`
 --
 ALTER TABLE `base`
   MODIFY `base_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
-
 --
--- AUTO_INCREMENT для таблицы `cpu`
+-- AUTO_INCREMENT for table `cpu`
 --
 ALTER TABLE `cpu`
   MODIFY `cpu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
-
 --
--- AUTO_INCREMENT для таблицы `hdd`
+-- AUTO_INCREMENT for table `hdd`
 --
 ALTER TABLE `hdd`
   MODIFY `hdd_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
-
 --
--- AUTO_INCREMENT для таблицы `options`
+-- AUTO_INCREMENT for table `options`
 --
 ALTER TABLE `options`
   MODIFY `options_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
 --
--- AUTO_INCREMENT для таблицы `ram`
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `ram`
 --
 ALTER TABLE `ram`
   MODIFY `ram_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
 --
--- AUTO_INCREMENT для таблицы `ssd`
+-- AUTO_INCREMENT for table `ssd`
 --
 ALTER TABLE `ssd`
   MODIFY `ssd_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-COMMIT;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

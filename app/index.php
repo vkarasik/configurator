@@ -22,11 +22,13 @@
 </head>
 
 <body>
-    <?php 
-        include 'includes/configurator.html';
-        include 'includes/blocks/_modal-content.html';
-        include 'includes/blocks/_modal-form.html';
-    ?>
+    <div class="wrapper">
+    <?php
+include 'includes/configurator.html';
+include 'includes/blocks/_modal-content.html';
+include 'includes/blocks/_modal-form.html';
+?>
+    </div>
 </body>
 
 </html>

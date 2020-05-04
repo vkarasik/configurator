@@ -6,7 +6,6 @@ $status = '';
 if (!empty($_POST)) {
 
     $data = (object) $_POST;
-    // $to = 'v.karasik@cd-life.by' . ', ' . $data->email;
 
     $email = preg_match('/.+@.+\..+/', $data->email);
 
@@ -17,8 +16,8 @@ if (!empty($_POST)) {
 
         require 'add-config.php'; // add config into db
 
-        $to = 'v.karasik@cd-life.by';
-        // $subject = 'Сборка сервера №' . $data->num;
+        $to = 'vadkarasik@gmail.com';
+        $subject = 'Сборка сервера №' . $num; // from add-config.php
         $message = "Компания: " . $data->company . "<br>" . "Конфигурация: " . $data->config . "<br>" . "Цена: " . $data->price . " USD без НДС" . "<br>" . "Количество: " . $data->quantity . " шт" . "<br>" . "Срок поставки: " . $data->term . " дн" . "<br>" . "Комментарий: " . $data->comment;
 
         // На случай если какая-то строка письма длиннее 70 символов мы используем wordwrap()

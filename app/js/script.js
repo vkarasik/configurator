@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     }
     var clnNode = node.cloneNode(true); // clone with children
     clnNode.dataset.iscloned = 'true'; // set this attr for deleteItem()
-    clnNode.children[4].children[0].remove(); // delete add button
+    clnNode.children[4].children[1].remove(); // delete add button
     clnNode.dataset.index = currentConfig[node.id].length; // get array length from currentConfig
     clnNode.id += currentConfig[node.id].length; // set new id
 

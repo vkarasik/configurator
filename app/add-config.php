@@ -7,5 +7,8 @@ $query = "INSERT INTO orders VALUES (DEFAULT, '$data->config', $data->quantity, 
 // Request
 mysqli_query($conn, $query);
 
+// Get last index
+$num = (mysqli_insert_id($conn));
+
 // Close
 mysqli_close($conn);

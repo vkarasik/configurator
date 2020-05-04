@@ -10,7 +10,6 @@ $id = $_GET['id'];
 if (isset($id)) {
     $column = $componet . "_id";
     $query = "SELECT * FROM $componet WHERE $column = $id";
-    // var_dump ($query);
 } elseif (isset($filter)) {
     $filter = explode('/', $filter); // turn into arr
     $filter = ('"' . implode('", "', array_map(strval, $filter)) . '"'); // turn into string with comma
@@ -19,20 +18,27 @@ if (isset($id)) {
     $query = "SELECT * FROM $componet";
 }
 
-
 // Get Result
 $result = mysqli_query($conn, $query);
 
-// Fetch Data
-$components = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
 // Data Array
-$data = [];
+$data = array();
 
-// Loop through $components and add to $data array
-foreach ($components as $key => $value) {
-    $data[] = $value;
+// Loop through and add to $data array
+while (($row = mysqli_fetch_assoc($result))) {
+    array_push($data, $row);
 }
+
+// Close
+mysqli_close($conn);
+
+// // Fetch Data
+// $components = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+// // Loop through $components and add to $data array
+// foreach ($components as $key => $value) {
+//     $data[] = $value;
+// }
 
 // Return JSON from $data array
 echo json_encode($data, JSON_NUMERIC_CHECK);
