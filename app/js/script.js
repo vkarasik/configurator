@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
     if (curComponent !== 'base' && swichState) {
       if (currentConfig['base'][0] == undefined) {
-        alert('В режиме совместимости сначала выберите платформу.');
+        alert('Сначала выберите платформу. Или отключите режим совместимости компонентов.');
         return;
       }
       var filter = currentConfig['base'][0][curComponent]; // get condition for MYSQL WHERE clause
@@ -351,9 +351,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
       var componentId = curComponentList[i][curComponent + '_id'];
       var componentName = '<span class="components__item-name">' + curComponentList[i].name + '</span>';
       var componentSpec = '<span class="components__item-spec">(' + curComponentList[i].description + ')</span>';
-      var externalLink = curComponentList[i].link != '' ? '<a class="components__item-link" href="' + curComponentList[i].link + '" target="_blank">подробнее</a>' : '';
+      var externalLink = curComponentList[i].link != '' ? '<a class="components__item-link" href="' + curComponentList[i].link + '" target="_blank" title="подробная информация"></a>' : '';
 
-      var componentDescription = componentName + componentSpec + externalLink;
+      var componentDescription = componentName + externalLink + componentSpec;
 
       var componentPrice = curComponentList[i].price;
       var componentTerm = curComponentList[i].term;
