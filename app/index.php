@@ -16,7 +16,7 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
     <title>Конфигуратор сервера CDL</title>
-    <meta name="description" content="" />
+    <meta name="description" content="Конфигуратор серверного оборудования" />
     <link rel="stylesheet" href="css/main.min.css">
     <script src="js/script.js"></script>
 </head>

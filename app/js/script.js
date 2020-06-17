@@ -58,9 +58,15 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
   document.querySelector('textarea').addEventListener('input', autoGrow);
 
-  document.querySelectorAll('.modal__close').forEach(function (i) {
-    i.addEventListener('click', hideModal);
-  });
+  // Because of IE and old browsers
+  var closeButtons = document.querySelectorAll('.modal__close');
+  for (i = 0; i < closeButtons.length; i++) {
+    closeButtons[i].addEventListener('click', hideModal);
+  }
+
+  // document.querySelectorAll('.modal__close').forEach(function (i) {
+  //   i.addEventListener('click', hideModal);
+  // });
 
   document.querySelector('.components').addEventListener('click', function (e) {
     if (e.target.className === 'components__item-select-icon') {
@@ -179,8 +185,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
     setTimeout(function () {
       document.querySelector(target).classList.remove('modal_show');
       document.querySelector('body').classList.remove('modal-open'); // allow scroll body
+
       if (target == '.modal_content') {
-        document.querySelector('.components tbody').innerHTML = ''; // clean content inside when closing
+        // clean content inside table when closing modal
+        var tbodies = document.querySelectorAll('.components tbody');
+        for (i = 0; i < tbodies.length; i++) {
+          tbodies[i].remove();
+        }
       }
     }, 250);
   }
@@ -346,8 +357,35 @@ document.addEventListener('DOMContentLoaded', function (e) {
     componentsTable.dataset.componentType = curComponent;
     componentsTable.dataset.nodeIndex = curNode.dataset.index;
 
-    // Render rows
+    // Create array of subcategories
+    var arrayOfSubcategories = [];
+    // Create tbody node
+    var tbody;
+
+    // Render tbodies and rows
     for (i = 0; i < curComponentList.length; i++) {
+      var componentSubcategory = curComponentList[i].subcategory;
+
+      // Check if this subcategory already exists in arrayOfSubcategories
+      // if there isn't such subcategory then create tbody with subcat row
+      if (arrayOfSubcategories.indexOf(componentSubcategory) === -1) {
+        arrayOfSubcategories.push(componentSubcategory);
+
+        tbody = document.createElement('tbody');
+        tbody.dataset.subcat = componentSubcategory; // just for clearity
+        tbody = componentsTable.appendChild(tbody); // append and return appended node
+
+        var rowSubCat = document.createElement('tr');
+        rowSubCat.classList.add('components__category');
+        rowSubCat.innerHTML = '<td colspan="4">' + componentSubcategory + '</td>';
+        tbody.appendChild(rowSubCat);
+      } else {
+        // if there is such subcategory in arrayOfSubcategories
+        // then get it's index and get tbody node with this index from DOM
+        var index = arrayOfSubcategories.indexOf(componentSubcategory);
+        tbody = document.querySelectorAll('.components tbody')[index];
+      }
+
       var componentId = curComponentList[i][curComponent + '_id'];
       var componentName = '<span class="components__item-name">' + curComponentList[i].name + '</span>';
       var componentSpec = '<span class="components__item-spec">(' + curComponentList[i].description + ')</span>';
@@ -357,13 +395,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
       var componentPrice = curComponentList[i].price;
       var componentTerm = curComponentList[i].term;
-      var componentSubcategory = curComponentList[i].subcategory;
-
-      // Add subcat row
-      var rowSubCat = document.createElement('tr');
-      rowSubCat.classList.add('components__category');
-      rowSubCat.innerHTML = '<td colspan="4">' + componentSubcategory + '</td>';
-      document.querySelector('.components tbody').appendChild(rowSubCat);
 
       // Add component row
       var row = document.createElement('tr');
@@ -379,18 +410,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
       var tdSelect = '<td class="components__item-select" title="Выбор компонента"><img class="components__item-select-icon" src="img/icon_add-blue.svg" title="Выбор компонента"></td>';
 
       row.innerHTML = tdName + tdPrice + tdTerm + tdSelect;
-      document.querySelector('.components tbody').appendChild(row);
-    }
-
-    // Delete double subcats
-    var subCategories = document.querySelectorAll('.components__category');
-    for (i = 0; i < subCategories.length - 1; i++) {
-      // Don't take last element
-      if (subCategories[i].innerHTML === subCategories[i + 1].innerHTML) {
-        var tbody = subCategories[i + 1].parentElement;
-        tbody.removeChild(subCategories[i + 1]);
-        //subCategories[i + 1].remove(); // IE11+
-      }
+      tbody.appendChild(row);
     }
     showModal(curNode);
   }
