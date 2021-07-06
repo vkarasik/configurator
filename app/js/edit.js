@@ -147,10 +147,10 @@ document.addEventListener('DOMContentLoaded', function (e) {
       row.classList.add('components__item');
       var id = component[curComponent + '_id'];
 
-      var tdName = '<td class="components__item-desc">' + component.name + '</td>';
-      var tdPrice = '<td class="components__item-price"><input id="price_' + curComponent + '_' + id + '" type="text" value="' + component.price + '"></td>';
-      var tdTerm = '<td class="components__item-term"><input id="term_' + curComponent + '_' + id + '"type="text" value="' + component.term + '"></td>';
-      var tdSave = '<td class="components__item-select"><button class="button button_save" data-current-component="' + curComponent + '" data-componentid="' + id + '">Сохранить</button></td>';
+      var tdName = `<td class="components__item-desc">${component.name}</td>`;
+      var tdPrice = `<td class="components__item-price"><input id="price_${curComponent}_${id}" type="text" value="${component.price}"></td>`;
+      var tdTerm = `<td class="components__item-term"><input id="term_${curComponent}_${id}" type="text" value="${component.term}"></td>`;
+      var tdSave = `<td class="components__item-select"><button class="button button_save" data-current-component="${curComponent}" data-componentid="${id}">Сохранить</button></td>`;
 
       row.innerHTML = tdName + tdPrice + tdTerm + tdSave;
       document.querySelector('.components tbody').appendChild(row);
