@@ -5,17 +5,18 @@ require 'config/db.php';
 $componet = $_GET['cmpt'];
 $filter = $_GET['filter'];
 $id = $_GET['id'];
+$active = true;
 
 // Create Query
 if (isset($id)) {
     $column = $componet . "_id";
-    $query = "SELECT * FROM $componet WHERE $column = $id";
+    $query = "SELECT * FROM $componet WHERE $column = $id AND active = $active";
 } elseif (isset($filter)) {
     $filter = explode('/', $filter); // turn into arr
     $filter = ('"' . implode('", "', array_map(strval, $filter)) . '"'); // turn into string with comma
-    $query = "SELECT * FROM $componet WHERE type IN ($filter)";
+    $query = "SELECT * FROM $componet WHERE type IN ($filter) AND active = $active";
 } else {
-    $query = "SELECT * FROM $componet";
+    $query = "SELECT * FROM $componet WHERE active = $active";
 }
 
 // Get Result

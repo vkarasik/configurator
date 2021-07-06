@@ -49,6 +49,7 @@ if ($_SESSION['admin'] != "admin") {
                     <td>Наименование</td>
                     <td>Цена</td>
                     <td>Срок&nbsp;поставки</td>
+                    <td>Активность</td>
                     <td>Изменить</td>
                 </tr>
             </thead>

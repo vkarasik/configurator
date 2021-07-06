@@ -102,8 +102,9 @@ document.addEventListener('DOMContentLoaded', function (e) {
     var id = e.target.dataset.componentid;
     var price = document.getElementById('price_' + component + '_' + id).value;
     var term = document.getElementById('term_' + component + '_' + id).value;
+    var active = document.getElementById('act_' + component + '_' + id).checked;
 
-    var url = '../update-component.php?cmpt=' + component + '&id=' + id + '&price=' + price + '&term=' + term;
+    var url = '../update-component.php?cmpt=' + component + '&id=' + id + '&price=' + price + '&term=' + term + '&active=' + active;
 
     console.log(url);
 
@@ -146,13 +147,15 @@ document.addEventListener('DOMContentLoaded', function (e) {
       var row = document.createElement('tr');
       row.classList.add('components__item');
       var id = component[curComponent + '_id'];
+      var active = component.active ? 'checked' : '';
 
       var tdName = `<td class="components__item-desc">${component.name}</td>`;
       var tdPrice = `<td class="components__item-price"><input id="price_${curComponent}_${id}" type="text" value="${component.price}"></td>`;
       var tdTerm = `<td class="components__item-term"><input id="term_${curComponent}_${id}" type="text" value="${component.term}"></td>`;
+      var tdAct = `<td class="components__item-act"><input id="act_${curComponent}_${id}" type="checkbox" ${active}></td>`;
       var tdSave = `<td class="components__item-select"><button class="button button_save" data-current-component="${curComponent}" data-componentid="${id}">Сохранить</button></td>`;
 
-      row.innerHTML = tdName + tdPrice + tdTerm + tdSave;
+      row.innerHTML = tdName + tdPrice + tdTerm + tdAct + tdSave;
       document.querySelector('.components tbody').appendChild(row);
 
       var buttons = document.querySelectorAll('.button_save');
