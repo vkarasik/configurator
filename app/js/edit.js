@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     var term = document.getElementById('term_' + component + '_' + id).value;
     var active = document.getElementById('act_' + component + '_' + id).checked;
 
-    var url = '../update-component.php?cmpt=' + component + '&id=' + id + '&price=' + price + '&term=' + term + '&active=' + active;
+    var url = `../update-component.php?cmpt=${component}&id=${id}&price=${price}&term=${term}&active=${active}`;
 
     console.log(url);
 
