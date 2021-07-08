@@ -4,12 +4,13 @@ require 'config/db.php';
 // Current Component
 $componet = $_GET['cmpt'];
 $id = $_GET['id'];
+$name = $_GET['name'];
 $price = $_GET['price'];
 $term = $_GET['term'];
 $active = $_GET['active'];
 
 $column = $componet . "_id";
-$query = "UPDATE $componet SET price = $price, term = $term, active = $active WHERE $column = $id";
+$query = "UPDATE $componet SET name = '$name', price = $price, term = $term, active = $active WHERE $column = $id";
 
 // Get Result
 

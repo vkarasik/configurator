@@ -100,11 +100,12 @@ document.addEventListener('DOMContentLoaded', function (e) {
   function updateItem(e) {
     var component = e.target.dataset.currentComponent;
     var id = e.target.dataset.componentid;
+    var name = document.getElementById('name_' + component + '_' + id).value;
     var price = document.getElementById('price_' + component + '_' + id).value;
     var term = document.getElementById('term_' + component + '_' + id).value;
     var active = document.getElementById('act_' + component + '_' + id).checked;
 
-    var url = `../update-component.php?cmpt=${component}&id=${id}&price=${price}&term=${term}&active=${active}`;
+    var url = `../update-component.php?cmpt=${component}&id=${id}&name=${name}&price=${price}&term=${term}&active=${active}`;
 
     console.log(url);
 
@@ -149,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
       var id = component[curComponent + '_id'];
       var active = component.active ? 'checked' : '';
 
-      var tdName = `<td class="components__item-desc">${component.name}</td>`;
+      var tdName = `<td class="components__item-name"><input id="name_${curComponent}_${id}" type="text" value="${component.name}"></td>`;
       var tdPrice = `<td class="components__item-price"><input id="price_${curComponent}_${id}" type="text" value="${component.price}"></td>`;
       var tdTerm = `<td class="components__item-term"><input id="term_${curComponent}_${id}" type="text" value="${component.term}"></td>`;
       var tdAct = `<td class="components__item-act"><input id="act_${curComponent}_${id}" type="checkbox" ${active}></td>`;
