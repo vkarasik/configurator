@@ -5,12 +5,13 @@ require 'config/db.php';
 $componet = $_GET['cmpt'];
 $id = $_GET['id'];
 $name = $_GET['name'];
+$desc = $_GET['desc'];
 $price = $_GET['price'];
 $term = $_GET['term'];
 $active = $_GET['active'];
 
 $column = $componet . "_id";
-$query = "UPDATE $componet SET name = '$name', price = $price, term = $term, active = $active WHERE $column = $id";
+$query = "UPDATE $componet SET name = '$name', description = '$desc', price = $price, term = $term, active = $active WHERE $column = $id";
 
 // Get Result
 
